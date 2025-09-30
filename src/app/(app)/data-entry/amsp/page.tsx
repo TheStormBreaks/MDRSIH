@@ -1,5 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, LineChart, Shield, TrendingUp, AlertOctagon, CheckCircle2, List, Save } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Shield, TrendingUp, CheckCircle2, List, Save, AlertOctagon } from "lucide-react";
 import AlertGenerator from "./components/alert-generator";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,11 +8,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  Chart as ShadcnChart,
-  ChartLegend,
-  ChartLegendContent
 } from "@/components/ui/chart"
-import { Bar, CartesianGrid, XAxis, YAxis, Line, ResponsiveContainer } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, ResponsiveContainer } from "recharts"
 
 const complianceData = [
   { month: "Jan", compliance: 88 },
@@ -51,13 +48,13 @@ export default function AmspDashboardPage() {
           <CardContent>
             <ChartContainer config={{}} className="h-[250px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                  <ShadcnChart data={pathogenData} >
+                  <BarChart data={pathogenData} >
                     <CartesianGrid vertical={false} />
                     <XAxis dataKey="pathogen" tickLine={false} tickMargin={10} axisLine={false} />
                     <YAxis />
                     <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
                     <Bar dataKey="cases" fill="hsl(var(--primary))" radius={4} />
-                  </ShadcnChart>
+                  </BarChart>
               </ResponsiveContainer>
             </ChartContainer>
           </CardContent>
@@ -69,13 +66,13 @@ export default function AmspDashboardPage() {
           <CardContent>
             <ChartContainer config={{}} className="h-[250px] w-full">
                <ResponsiveContainer width="100%" height="100%">
-                <ShadcnChart data={complianceData}>
+                <LineChart data={complianceData}>
                   <CartesianGrid vertical={false} />
                   <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
                   <YAxis domain={[80, 100]} tickFormatter={(value) => `${value}%`} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Line type="monotone" dataKey="compliance" stroke="hsl(var(--primary))" strokeWidth={3} dot={{r: 5, fill: 'hsl(var(--primary))'}} />
-                </ShadcnChart>
+                </LineChart>
               </ResponsiveContainer>
             </ChartContainer>
           </CardContent>
