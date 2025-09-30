@@ -24,8 +24,8 @@ import {
   HeartPulse,
 } from "lucide-react";
 import AmTrendGraph from "./components/amr-trend-graph";
-import HospitalMap from "./components/hospital-map";
 import RealTimeTicker from "./components/real-time-ticker";
+import PatientRiskTable from "./components/patient-risk-table";
 
 export default function DashboardPage() {
   return (
@@ -63,13 +63,13 @@ export default function DashboardPage() {
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Hospital Outbreak Map</CardTitle>
+            <CardTitle>High-Risk Patient Tracing</CardTitle>
             <CardDescription>
               Real-time patient &amp; staff movements and MDR cluster heatmap.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <HospitalMap />
+            <PatientRiskTable />
           </CardContent>
         </Card>
         <Card>
