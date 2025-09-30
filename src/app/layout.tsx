@@ -6,8 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "MDR Sentinel",
-  description: "MDR Hospital Infection Control Dashboard & Data Entry App",
+  title: "PathoTrace",
+  description: "Pathogen Infection Control Dashboard & Data Entry App",
 };
 
 export default function RootLayout({

@@ -10,7 +10,7 @@ export default function Home() {
         <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2 font-bold text-xl">
             <Hospital className="h-7 w-7 text-primary-foreground" />
-            <span className="font-headline">MDR Sentinel</span>
+            <span className="font-headline">PathoTrace</span>
           </Link>
         </div>
       </header>
@@ -46,7 +46,7 @@ export default function Home() {
         <div className="container mx-auto flex items-center justify-between text-sm">
           <div className="flex items-center gap-2">
             <Hospital className="h-5 w-5" />
-            <span className="font-semibold">MDR Sentinel © {new Date().getFullYear()}</span>
+            <span className="font-semibold">PathoTrace © {new Date().getFullYear()}</span>
           </div>
           <Button variant="ghost" size="sm" asChild>
             <Link href="#">
