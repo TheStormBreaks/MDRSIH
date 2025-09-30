@@ -240,7 +240,7 @@ export default function DoctorDataEntryPage() {
             <Card>
                 <CardHeader>
                     <CardTitle>Infection Control Declaration</CardTitle>
-                    <CardDescription>Declare the patient's infection status.</CardDescription>
+                    <CardDescription>Declare the patient's infection status and confirm protocol adherence.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -256,6 +256,10 @@ export default function DoctorDataEntryPage() {
                       </SelectContent>
                     </Select>
                   </div>
+                   <div className="flex items-center space-x-2">
+                      <Checkbox id="precautions-followed" />
+                      <Label htmlFor="precautions-followed">All infection control precautions were followed.</Label>
+                    </div>
                   <div className="space-y-2">
                     <Label htmlFor="declaration-notes">Notes</Label>
                     <Textarea id="declaration-notes" placeholder="Add any relevant notes..." />

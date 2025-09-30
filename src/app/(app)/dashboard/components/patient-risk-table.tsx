@@ -18,6 +18,7 @@ const patientData = [
     bed: "12A",
     risk: 95,
     status: "Active MDR",
+    morbidities: "Diabetes, CKD",
   },
   {
     id: "P482",
@@ -25,6 +26,7 @@ const patientData = [
     bed: "03B",
     risk: 75,
     status: "Active MDR",
+    morbidities: "COPD",
   },
   {
     id: "S102",
@@ -32,6 +34,7 @@ const patientData = [
     bed: "N/A (Staff)",
     risk: 60,
     status: "Exposed",
+    morbidities: "N/A",
   },
   {
     id: "P604",
@@ -39,6 +42,7 @@ const patientData = [
     bed: "07A",
     risk: 45,
     status: "Exposed",
+    morbidities: "Hypertension",
   },
   {
     id: "P519",
@@ -46,6 +50,7 @@ const patientData = [
     bed: "Post-Op 2",
     risk: 88,
     status: "Active MDR",
+    morbidities: "Post-surgery",
   },
   {
     id: "P312",
@@ -53,6 +58,7 @@ const patientData = [
     bed: "01A",
     risk: 10,
     status: "Cleared",
+    morbidities: "N/A",
   },
 ];
 
@@ -92,6 +98,7 @@ export default function PatientRiskTable() {
           <TableHead>Ward</TableHead>
           <TableHead>Bed</TableHead>
           <TableHead>Status</TableHead>
+          <TableHead>Morbidities</TableHead>
           <TableHead className="text-right">Risk Level</TableHead>
         </TableRow>
       </TableHeader>
@@ -104,6 +111,7 @@ export default function PatientRiskTable() {
               <TableCell>{patient.ward}</TableCell>
               <TableCell>{patient.bed}</TableCell>
               <TableCell>{getStatusBadge(patient.status)}</TableCell>
+              <TableCell>{patient.morbidities}</TableCell>
               <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-2">
                   <span className="w-12 text-sm font-semibold">
