@@ -147,6 +147,68 @@ export default function DoctorDataEntryPage() {
             </CardFooter>
           </Card>
         </TabsContent>
+        <TabsContent value="follow-up">
+          <Card>
+            <CardHeader>
+              <CardTitle>Log Follow-up Visit</CardTitle>
+              <CardDescription>Enter patient progress and status updates.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 <div className="space-y-2">
+                  <Label htmlFor="follow-up-patient-id">Patient ID</Label>
+                  <Input id="follow-up-patient-id" placeholder="e.g., P78901" />
+                </div>
+                 <div className="space-y-2">
+                  <Label htmlFor="follow-up-date">Date of Follow-up</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !date && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {date ? format(date, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="progress-notes">Progress Notes</Label>
+                <Textarea id="progress-notes" placeholder="Describe patient's progress, response to treatment, etc."/>
+              </div>
+               <div className="space-y-2">
+                <Label htmlFor="follow-up-status">Current Status</Label>
+                <Select>
+                  <SelectTrigger id="follow-up-status">
+                    <SelectValue placeholder="Select current status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="improving">Improving</SelectItem>
+                    <SelectItem value="stable">Stable</SelectItem>
+                    <SelectItem value="deteriorating">Deteriorating</SelectItem>
+                    <SelectItem value="discharged">Discharged</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button>Save Follow-up</Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
         <TabsContent value="prescription">
             <Card>
                 <CardHeader>
