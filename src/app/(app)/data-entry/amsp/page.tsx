@@ -3,13 +3,13 @@ import { Shield, TrendingUp, CheckCircle2, List, Save, AlertOctagon } from "luci
 import AlertGenerator from "./components/alert-generator";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, ResponsiveContainer } from "recharts"
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, ResponsiveContainer } from "recharts"
+
 
 const complianceData = [
   { month: "Jan", compliance: 88 },
@@ -46,15 +46,17 @@ export default function AmspDashboardPage() {
             <CardTitle className="flex items-center gap-2"><TrendingUp /> AMR Pathogen Frequency</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={pathogenData} >
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="pathogen" tickLine={false} tickMargin={10} axisLine={false} />
-                <YAxis />
-                <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-                <Bar dataKey="cases" fill="hsl(var(--primary))" radius={4} />
-              </BarChart>
-            </ResponsiveContainer>
+            <ChartContainer config={{}} className="w-full h-[250px]">
+              <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={pathogenData} >
+                    <CartesianGrid vertical={false} />
+                    <XAxis dataKey="pathogen" tickLine={false} tickMargin={10} axisLine={false} />
+                    <YAxis />
+                    <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+                    <Bar dataKey="cases" fill="hsl(var(--primary))" radius={4} />
+                  </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
           </CardContent>
         </Card>
         <Card>
@@ -62,15 +64,17 @@ export default function AmspDashboardPage() {
             <CardTitle className="flex items-center gap-2"><CheckCircle2 /> Compliance % Over Time</CardTitle>
           </CardHeader>
           <CardContent>
-             <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={complianceData}>
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
-                <YAxis domain={[80, 100]} tickFormatter={(value) => `${value}%`} />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Line type="monotone" dataKey="compliance" stroke="hsl(var(--primary))" strokeWidth={3} dot={{r: 5, fill: 'hsl(var(--primary))'}} />
-              </LineChart>
-            </ResponsiveContainer>
+             <ChartContainer config={{}} className="w-full h-[250px]">
+              <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={complianceData}>
+                    <CartesianGrid vertical={false} />
+                    <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
+                    <YAxis domain={[80, 100]} tickFormatter={(value) => `${value}%`} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Line type="monotone" dataKey="compliance" stroke="hsl(var(--primary))" strokeWidth={3} dot={{r: 5, fill: 'hsl(var(--primary))'}} />
+                  </LineChart>
+              </ResponsiveContainer>
+             </ChartContainer>
           </CardContent>
         </Card>
       </div>
