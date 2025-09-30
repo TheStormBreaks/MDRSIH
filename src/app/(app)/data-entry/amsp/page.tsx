@@ -3,7 +3,7 @@ import { Shield, TrendingUp, CheckCircle2, List, Save, AlertOctagon } from "luci
 import AlertGenerator from "./components/alert-generator";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, ResponsiveContainer } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart } from "recharts"
 import {
   ChartContainer,
   ChartTooltip,
@@ -47,15 +47,13 @@ export default function AmspDashboardPage() {
           </CardHeader>
           <CardContent>
             <ChartContainer config={{}} className="w-full h-[250px]">
-              <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={pathogenData} >
-                    <CartesianGrid vertical={false} />
-                    <XAxis dataKey="pathogen" tickLine={false} tickMargin={10} axisLine={false} />
-                    <YAxis />
-                    <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-                    <Bar dataKey="cases" fill="hsl(var(--primary))" radius={4} />
-                  </BarChart>
-              </ResponsiveContainer>
+                <BarChart data={pathogenData} >
+                  <CartesianGrid vertical={false} />
+                  <XAxis dataKey="pathogen" tickLine={false} tickMargin={10} axisLine={false} />
+                  <YAxis />
+                  <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+                  <Bar dataKey="cases" fill="hsl(var(--primary))" radius={4} />
+                </BarChart>
             </ChartContainer>
           </CardContent>
         </Card>
@@ -65,15 +63,13 @@ export default function AmspDashboardPage() {
           </CardHeader>
           <CardContent>
              <ChartContainer config={{}} className="w-full h-[250px]">
-              <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={complianceData}>
-                    <CartesianGrid vertical={false} />
-                    <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
-                    <YAxis domain={[80, 100]} tickFormatter={(value) => `${value}%`} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Line type="monotone" dataKey="compliance" stroke="hsl(var(--primary))" strokeWidth={3} dot={{r: 5, fill: 'hsl(var(--primary))'}} />
-                  </LineChart>
-              </ResponsiveContainer>
+                <LineChart data={complianceData}>
+                  <CartesianGrid vertical={false} />
+                  <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
+                  <YAxis domain={[80, 100]} tickFormatter={(value) => `${value}%`} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Line type="monotone" dataKey="compliance" stroke="hsl(var(--primary))" strokeWidth={3} dot={{r: 5, fill: 'hsl(var(--primary))'}} />
+                </LineChart>
              </ChartContainer>
           </CardContent>
         </Card>
