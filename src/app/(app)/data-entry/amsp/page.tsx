@@ -46,17 +46,15 @@ export default function AmspDashboardPage() {
             <CardTitle className="flex items-center gap-2"><TrendingUp /> AMR Pathogen Frequency</CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={{}} className="h-[250px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={pathogenData} >
-                    <CartesianGrid vertical={false} />
-                    <XAxis dataKey="pathogen" tickLine={false} tickMargin={10} axisLine={false} />
-                    <YAxis />
-                    <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-                    <Bar dataKey="cases" fill="hsl(var(--primary))" radius={4} />
-                  </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={pathogenData} >
+                <CartesianGrid vertical={false} />
+                <XAxis dataKey="pathogen" tickLine={false} tickMargin={10} axisLine={false} />
+                <YAxis />
+                <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+                <Bar dataKey="cases" fill="hsl(var(--primary))" radius={4} />
+              </BarChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
         <Card>
@@ -64,17 +62,15 @@ export default function AmspDashboardPage() {
             <CardTitle className="flex items-center gap-2"><CheckCircle2 /> Compliance % Over Time</CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={{}} className="h-[250px] w-full">
-               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={complianceData}>
-                  <CartesianGrid vertical={false} />
-                  <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
-                  <YAxis domain={[80, 100]} tickFormatter={(value) => `${value}%`} />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Line type="monotone" dataKey="compliance" stroke="hsl(var(--primary))" strokeWidth={3} dot={{r: 5, fill: 'hsl(var(--primary))'}} />
-                </LineChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+             <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={complianceData}>
+                <CartesianGrid vertical={false} />
+                <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
+                <YAxis domain={[80, 100]} tickFormatter={(value) => `${value}%`} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Line type="monotone" dataKey="compliance" stroke="hsl(var(--primary))" strokeWidth={3} dot={{r: 5, fill: 'hsl(var(--primary))'}} />
+              </LineChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>
