@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Shield, TrendingUp, CheckCircle2, List, Save, AlertOctagon } from "lucide-react";
 import AlertGenerator from "./components/alert-generator";
@@ -47,7 +49,7 @@ export default function AmspDashboardPage() {
           </CardHeader>
           <CardContent>
             <ChartContainer config={{}} className="w-full h-[250px]">
-                <BarChart data={pathogenData} >
+                <BarChart data={pathogenData} accessibilityLayer>
                   <CartesianGrid vertical={false} />
                   <XAxis dataKey="pathogen" tickLine={false} tickMargin={10} axisLine={false} />
                   <YAxis />
@@ -63,7 +65,7 @@ export default function AmspDashboardPage() {
           </CardHeader>
           <CardContent>
              <ChartContainer config={{}} className="w-full h-[250px]">
-                <LineChart data={complianceData}>
+                <LineChart data={complianceData} accessibilityLayer>
                   <CartesianGrid vertical={false} />
                   <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
                   <YAxis domain={[80, 100]} tickFormatter={(value) => `${value}%`} />
