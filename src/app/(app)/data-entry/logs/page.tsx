@@ -22,6 +22,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Stethoscope, Pill, Microscope, Check, X, AlertTriangle, Cpu, TestTube2, Database, BarChart } from "lucide-react";
 import { cn } from "@/lib/utils";
+import React from 'react';
 
 const doctorLogs = [
     { id: 1, patientId: "P789", date: "2023-10-26", action: "New Case", details: "Suspected MRSA, fever", risk: 95 },
@@ -389,52 +390,142 @@ function TestCaseContent() {
   const testCases = [
     {
       case: "Test Case 1: Patient Risk Assessment and Data Entry",
-      inputs: "Patient ID: P12345, Admission Date: 2025-10-10, Suspected Pathogen: MRSA, Symptoms: Fever (102°F), Cough, Fatigue, Equipment Used: Foley catheter, Ventilator, Mobility Status: Bedridden, Previous Antibiotic Usage: Vancomycin for 5 days, Environmental Sanitation Score near patient: 58/100",
-      procedure: "Data entered into system by clinician. Patient vulnerability score calculated based on age, comorbidities, mobility (scored 8/10). Pathogen virulence index for MRSA set at 9/10. Environmental risk factor at patient's location captured as 6/10 (from sanitation score).",
-      formula: "R = ((Vp * 0.4) + (Sv * 0.3) + (Er * 0.3)) / 10 * 100",
-      calculation: "R = ((9 * 0.4) + (8 * 0.3) + (6 * 0.3)) / 10 * 100 = ((3.6 + 2.4 + 1.8) / 10) * 100 = 74%",
-      expected: "Risk Level: 74%. Real-time alert generated (threshold set at 70%). Dashboard displays patient risk status and notifies AMSP and environment teams.",
-      result: "Passed. System correctly computed risk, generated alert, and updated dashboard in real-time."
+      details: {
+        "Objective": "Verify accurate data entry of patient clinical data and pathogen details.",
+        "Patient ID": "P12345",
+        "Admission Date": "2025-10-10",
+        "Suspected Pathogen": "Methicillin-resistant Staphylococcus aureus (MRSA)",
+        "Symptoms": "Fever (102°F), Cough, Fatigue",
+        "Equipment Used": "Foley catheter, Ventilator",
+        "Mobility Status": "Bedridden",
+        "Previous Antibiotic Usage": "Vancomycin for 5 days",
+        "Environmental Sanitation Score": "58/100"
+      },
+      calculation: {
+        "Patient Vulnerability Score": "8/10 (based on age, comorbidities, mobility)",
+        "Pathogen Virulence Index": "9/10 (for MRSA)",
+        "Environmental Risk Factor": "6/10 (from sanitation score)",
+        "Formula": "R = (((Vp * 0.4) + (Sv * 0.3) + (Er * 0.3)) / 10) * 100",
+        "Resulting Calculation": "R = (((9 * 0.4) + (8 * 0.3) + (6 * 0.3)) / 10) * 100 = 74%"
+      },
+      outputs: {
+        "Expected Risk Level": "74%",
+        "Expected Alerts": "Real-time alert generated (threshold > 70%)",
+        "Expected Notifications": "Dashboard updated; AMSP and environment teams notified.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>
+      }
     },
     {
       case: "Test Case 2: Antimicrobial Prescription Entry and Sales Monitoring",
-      inputs: "Antibiotic: Vancomycin, Dosage: 1g twice daily, Duration: 7 days, Prescription entered by Dr. Smith, Pharmacy Sales Data (last 1 week): Prescriptions documented: 100 doses, Over-the-counter sales detected: 30 doses",
-      procedure: "Prescription tracked and matched with pharmacy sales. Isolation Forest anomaly detection algorithm applied to identify unusual sales patterns. Discrepancy calculated as D = (OTC_sales / Prescriptions) * 100.",
-      expected: "Alert raised for 30% discrepancy. Sales trend graphed weekly to monitor changes. Notification sent to pharmaceutical oversight.",
-      result: "Passed. Alert generated; trend analysis indicates rising over-the-counter sales by +5% from prior week."
+      details: {
+        "Objective": "Test the prescription entry for antibiotics and tracking of usage.",
+        "Prescription ID": "RX-VAN-5678",
+        "Antibiotic": "Vancomycin",
+        "Dosage": "1g twice daily",
+        "Duration": "7 days",
+        "Prescribed by": "Dr. Smith",
+        "Prescriptions Documented": "100 doses (last 7 days)",
+        "Over-the-counter Sales": "30 doses (last 7 days)"
+      },
+      calculation: {
+        "Model Used": "Isolation Forest for anomaly detection.",
+        "Anomaly Score (As)": "> 0.7 triggers an alert.",
+        "Discrepancy Formula": "D = (OTC Sales / Prescriptions) * 100",
+        "Resulting Calculation": "D = (30 / 100) * 100 = 30%"
+      },
+      outputs: {
+        "Expected Alerts": "Discrepancy alert for 30% (Threshold > 20%)",
+        "Expected Outputs": "Usage trend graph updated.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>
+      }
     },
     {
       case: "Test Case 3: Environmental Sanitation and Airborne Pathogen Monitoring",
-      inputs: "Location: ICU Ward 2, Sanitation Score: 55/100 (below acceptable threshold of 70), Airborne Pathogen Count: 1200 CFU/m³ (threshold 1000 CFU/m³), Cleaning Frequency: Once daily",
-      procedure: "Data entered by environment survey team. Rule-based alert system triggers real-time warnings.",
-      expected: "Sanitation alert issued for ICU Ward 2. Alert level classified as 'High Risk'. Automated email sent to infection control staff. Dashboard updates to show environmental risk metrics.",
-      result: "Passed. Alert promptly sent; cleaning frequency recommended to increase to twice daily."
+      details: {
+        "Objective": "Validate environmental data entry and alert generation for poor sanitation.",
+        "Sample ID": "ENV-ICU2-99",
+        "Location": "ICU Ward 2",
+        "Sanitation Score": "55/100 (Threshold < 70)",
+        "Airborne Pathogen Count": "1200 CFU/m³ (Threshold > 1000)",
+        "Cleaning Frequency": "Once daily"
+      },
+      calculation: {
+        "Process": "Rule-based alert system triggers real-time warnings based on thresholds."
+      },
+      outputs: {
+        "Expected Alerts": "Sanitation alert issued for ICU Ward 2; Classified as 'High Risk'.",
+        "Expected Notifications": "Automated email to infection control staff.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>
+      }
     },
-     {
+    {
       case: "Test Case 4: Multidrug Resistance Pattern Analysis",
-      objective: "Confirm machine learning model predicts resistance trends over time.",
-      inputs: "Historical monthly resistance data for pathogens like MRSA, Clostridium difficile, Actinobacter. Patient follow-up data.",
-      model: "Time-series forecasting model — Long Short Term Memory (LSTM) neural network.",
-      procedure: "Model trained on 12 months' resistance data; predicts next 2 months resistance trends.",
-      expected: "Forecast values for each pathogen resistance percent. Confusion matrix and accuracy metrics.",
-      result: "Passed. LSTM model achieved 92% accuracy; forecast showed increasing resistance trends for MRSA by 5% next quarter."
+       details: {
+        "Objective": "Confirm ML model predicts resistance trends over time.",
+        "Model Used": "Time-series forecasting — Long Short Term Memory (LSTM)",
+        "Input Data": "12 months of historical resistance data for MRSA, C. difficile, Actinobacter.",
+      },
+      calculation: {
+        "Process": "Model trained on historical data to predict next 2 months' trends."
+      },
+      outputs: {
+        "Expected Outputs": "Forecast values for pathogen resistance; Confusion matrix and accuracy metrics.",
+        "Model Accuracy": "92%",
+        "Example Forecast": "MRSA resistance predicted to increase by 5% next quarter.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>
+      }
     }
   ];
 
   return (
-    <div className="space-y-4 text-sm">
+    <div className="space-y-6">
       {testCases.map((tc, index) => (
-        <div key={index} className="p-4 border rounded-lg">
-          <h4 className="font-semibold">{tc.case}</h4>
-          <p className="text-muted-foreground mt-2"><span className="font-medium text-foreground">Inputs:</span> {tc.inputs}</p>
-          <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Procedure:</span> {tc.procedure}</p>
-          {tc.calculation && <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Calculation:</span> <code className="text-xs bg-muted p-1 rounded-sm">{tc.calculation}</code></p>}
-          <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Expected Outputs:</span> {tc.expected}</p>
-          <p className="mt-2"><span className="font-medium text-foreground">Result:</span> <span className="font-semibold text-green-600">{tc.result}</span></p>
-        </div>
+        <Card key={index} className="overflow-hidden">
+          <CardHeader>
+            <CardTitle>{tc.case}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm">
+            <Table className="table-fixed">
+              <TableBody>
+                {Object.entries(tc.details).map(([key, value]) => (
+                  <TableRow key={key}>
+                    <TableCell className="w-1/3 font-medium text-foreground">{key}</TableCell>
+                    <TableCell className="w-2/3 text-muted-foreground">
+                      {React.isValidElement(value) ? value : <p>{value as string}</p>}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <Table className="table-fixed">
+              <TableBody>
+                {Object.entries(tc.calculation).map(([key, value]) => (
+                  <TableRow key={key}>
+                    <TableCell className="w-1/3 font-medium text-foreground">{key}</TableCell>
+                    <TableCell className="w-2/3 text-muted-foreground">
+                      {React.isValidElement(value) ? value : <p>{value as string}</p>}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <Table className="table-fixed">
+              <TableBody>
+                {Object.entries(tc.outputs).map(([key, value]) => (
+                  <TableRow key={key}>
+                    <TableCell className="w-1/3 font-medium text-foreground">{key}</TableCell>
+                    <TableCell className="w-2/3 text-muted-foreground">
+                      {React.isValidElement(value) ? value : <p>{value as string}</p>}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       ))}
     </div>
-  )
+  );
 }
 
 function MLModelsContent() {
@@ -505,7 +596,7 @@ function SampleDataContent() {
             {formulas.map(row => (
               <TableRow key={row.name}>
                 <TableCell className="font-medium">{row.name}</TableCell>
-                <TableCell><code className="text-xs">{row.formula}</code></TableCell>
+                <TableCell><code className="text-xs bg-muted p-1 rounded-md">{row.formula}</code></TableCell>
                 <TableCell>{row.purpose}</TableCell>
               </TableRow>
             ))}
@@ -594,7 +685,7 @@ function MetricsJustificationContent() {
         <div>
         <h4 className="font-semibold">Critical Alerts</h4>
         <p className="text-muted-foreground">Generated when the risk classification model predicts a patient's risk score exceeds a high threshold (e.g., > 80%) or when the anomaly detection model flags a significant protocol breach.</p>
-          <code className="text-xs block mt-1 p-2 bg-muted rounded">Trigger: If(Risk_Score > 80 OR Anomaly_Score > 0.9) -&gt; Create Alert</code>
+          <code className="text-xs block mt-1 p-2 bg-muted rounded">Trigger: If(Risk_Score > 80 OR Anomaly_Score > 0.9) -> Create Alert</code>
       </div>
     </div>
   )
