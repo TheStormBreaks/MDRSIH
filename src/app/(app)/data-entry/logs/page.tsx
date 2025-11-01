@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Stethoscope, Pill, Microscope, Check, X, AlertTriangle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const doctorLogs = [
     { id: 1, patientId: "P789", date: "2023-10-26", action: "New Case", details: "Suspected MRSA, fever", risk: 95 },
