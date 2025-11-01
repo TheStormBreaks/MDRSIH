@@ -291,25 +291,27 @@ function TestCaseContent() {
 function MLModelsContent() {
   return (
     <div className="space-y-6 text-sm">
-      <div>
-        <h4 className="font-semibold mb-2">Data Analytics Model</h4>
-        <p className="text-muted-foreground"><span className="font-medium text-foreground">Type:</span> Descriptive and Predictive analytics.</p>
-        <p className="font-medium text-foreground mt-2">Techniques Used:</p>
-        <ul className="list-disc pl-5 text-muted-foreground space-y-1 mt-1">
-          <li>Real-time dashboard analytics for patient risk and antimicrobial usage.</li>
-          <li>Trend analysis for resistance patterns.</li>
-          <li>Anomaly detection for prescription discrepancies and environmental risks.</li>
+       <div className="p-4 border rounded-lg bg-muted/50">
+        <h4 className="font-semibold mb-2">ML-Powered Dashboard Metrics</h4>
+        <p className="text-muted-foreground mb-4">The summary metrics on the dashboard are powered by predictive models that analyze real-time and historical data to provide actionable insights.</p>
+        <ul className="list-disc pl-5 space-y-2">
+            <li><span className="font-medium text-foreground">Active MDR Cases & Exposed Contacts:</span> A Random Forest classifier analyzes patient data (symptoms, lab results, location) to flag potential new cases and identify exposed individuals through contact tracing algorithms. The change is calculated by comparing with the previous 24-hour window.
+            <br /><code className="text-xs">Formula: New Cases = Count(ML_Flag = 'Active MDR' in last 24h)</code></li>
+            <li><span className="font-medium text-foreground">Compliance Rate:</span> Anomaly detection models (Isolation Forest) monitor hand hygiene and PPE usage logs to flag deviations from protocol, contributing to the overall compliance score.
+            <br /><code className="text-xs">Formula: Compliance % = (Total Compliant Events / Total Events) * 100</code></li>
+             <li><span className="font-medium text-foreground">Critical Alerts:</span> Generated when the risk classification model predicts a patient's risk score exceeds a high threshold (e.g., > 80%) or when the anomaly detection model flags a significant protocol breach.
+            <br /><code className="text-xs">Trigger: If(Risk_Score > 80 OR Anomaly_Score > 0.9) -> Create Alert</code></li>
         </ul>
       </div>
       <div>
-        <h4 className="font-semibold mb-2">Machine Learning Models</h4>
+        <h4 className="font-semibold mb-2">Core Machine Learning Models</h4>
         <ul className="list-disc pl-5 text-muted-foreground space-y-1">
           <li><span className="font-medium text-foreground">LSTM (Long Short Term Memory):</span> For forecasting antimicrobial resistance patterns over time.</li>
           <li><span className="font-medium text-foreground">Random Forest Classifier:</span> For classification of patient risk levels based on clinical and environmental inputs.</li>
           <li><span className="font-medium text-foreground">Anomaly Detection using Isolation Forest:</span> To detect unusual prescription or pharmacy sales behavior.</li>
         </ul>
       </div>
-       <div className="p-4 border rounded-lg bg-muted/50">
+       <div className="p-4 border rounded-lg">
         <h4 className="font-semibold mb-2 flex items-center gap-2"><Calculator /> Sample Formula for Risk Level Calculation</h4>
         <code className="text-xs block bg-background p-2 rounded-md">
           Risk Level (%) = ( (Pathogen Virulence Index * 0.4) + (Patient Vulnerability Score * 0.3) + (Environmental Risk Factor * 0.3) ) / Maximum Score * 100
