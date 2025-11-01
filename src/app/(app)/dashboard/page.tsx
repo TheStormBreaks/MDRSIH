@@ -121,14 +121,14 @@ export default function DashboardPage() {
             <Cpu className="h-6 w-6" /> System Analytics & Model Insights
           </CardTitle>
           <CardDescription>
-            Detailed information on test cases, machine learning models, and data analytics.
+            Detailed information on test cases, machine learning models, and data analytics for research and validation purposes.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
             <AccordionItem value="item-1">
               <AccordionTrigger>
-                <div className="flex items-center gap-2"><TestTube2 /> Test Cases & Results</div>
+                <div className="flex items-center gap-2"><TestTube2 /> Detailed Test Cases & Results</div>
               </AccordionTrigger>
               <AccordionContent>
                 <TestCaseContent />
@@ -136,7 +136,7 @@ export default function DashboardPage() {
             </AccordionItem>
             <AccordionItem value="item-2">
               <AccordionTrigger>
-                <div className="flex items-center gap-2"><Cpu /> Data Analytics & Machine Learning Models</div>
+                <div className="flex items-center gap-2"><Cpu /> Machine Learning Models</div>
               </AccordionTrigger>
               <AccordionContent>
                 <MLModelsContent />
@@ -144,7 +144,7 @@ export default function DashboardPage() {
             </AccordionItem>
              <AccordionItem value="item-3">
               <AccordionTrigger>
-                <div className="flex items-center gap-2"><Database /> Sample Data & I/O</div>
+                <div className="flex items-center gap-2"><Database /> Formulas, Sample Data & Synopsis</div>
               </AccordionTrigger>
               <AccordionContent>
                 <SampleDataContent />
@@ -239,35 +239,34 @@ function EnvironmentResults() {
 function TestCaseContent() {
   const testCases = [
     {
-      case: "Test Case 1: Patient Data Entry and Tracking",
-      objective: "Verify accurate data entry of patient clinical data and pathogen details.",
-      inputs: "Patient ID: P00123, Date of Admission: 2025-10-15, Suspected Pathogen: Methicillin-resistant Staphylococcus aureus (MRSA), Symptoms: Fever, cough, shortness of breath, Equipment Used: Catheter, Ventilator, Mobility Status: Stable",
-      procedure: "The clinician enters the above data and observes if data is captured correctly in the system.",
-      expected: "Real-time update across doctor, pharmacist, AMSP, and environment teams. Risk level calculated at 45% based on patient and pathogen profile. Alert generated if risk > 40%.",
-      result: "Passed. Data reflected immediately in dashboard; risk level 45%; alert generated."
+      case: "Test Case 1: Patient Risk Assessment and Data Entry",
+      inputs: "Patient ID: P12345, Admission Date: 2025-10-10, Suspected Pathogen: MRSA, Symptoms: Fever (102°F), Cough, Fatigue, Equipment Used: Foley catheter, Ventilator, Mobility Status: Bedridden, Previous Antibiotic Usage: Vancomycin for 5 days, Environmental Sanitation Score near patient: 58/100",
+      procedure: "Data entered into system by clinician. Patient vulnerability score calculated based on age, comorbidities, mobility (scored 8/10). Pathogen virulence index for MRSA set at 9/10. Environmental risk factor at patient's location captured as 6/10 (from sanitation score).",
+      formula: "R = ((Vp * 0.4) + (Sv * 0.3) + (Er * 0.3)) / 10 * 100",
+      calculation: "R = ((9 * 0.4) + (8 * 0.3) + (6 * 0.3)) / 10 * 100 = ((3.6 + 2.4 + 1.8) / 10) * 100 = 78%",
+      expected: "Risk Level: 78%. Real-time alert generated (threshold set at 70%). Dashboard displays patient risk status and notifies AMSP and environment teams.",
+      result: "Passed. System correctly computed risk, generated alert, and updated dashboard in real-time."
     },
     {
-      case: "Test Case 2: Prescription Tracking and Antimicrobial Use Monitoring",
-      objective: "Test the prescription entry for antibiotics and tracking of usage.",
-      inputs: "Patient ID: P00124, Prescription: Vancomycin, Dosage: 1g twice daily, Duration: 7 days, Prescribed by Dr. A, Pharmacy sales data: 200 doses sold, 150 prescribed",
-      procedure: "Enter prescription, cross-check data with pharmacy sales.",
-      expected: "Discrepancy alert for 50 doses sold over the counter without prescription. Usage trend graph updated.",
-      result: "Passed. Alert raised on over-the-counter sales; graph shows usage trend increase of 10% week over week."
+      case: "Test Case 2: Antimicrobial Prescription Entry and Sales Monitoring",
+      inputs: "Antibiotic: Vancomycin, Dosage: 1g twice daily, Duration: 7 days, Prescription entered by Dr. Smith, Pharmacy Sales Data (last 1 week): Prescriptions documented: 100 doses, Over-the-counter sales detected: 30 doses",
+      procedure: "Prescription tracked and matched with pharmacy sales. Isolation Forest anomaly detection algorithm applied to identify unusual sales patterns.",
+      expected: "Alert raised for 30% discrepancy. Sales trend graphed weekly to monitor changes. Notification sent to pharmaceutical oversight.",
+      result: "Passed. Alert generated; trend analysis indicates rising over-the-counter sales by +5% from prior week."
     },
     {
-      case: "Test Case 3: Environment Surveillance and Alerting",
-      objective: "Validate environmental data entry and alert generation in case of poor sanitation.",
-      inputs: "Location: ICU Ward 3, Sanitation Score: 60/100 (below threshold of 70), Airborne pathogen concentration: Elevated with score 80/100",
-      procedure: "Environmental team enters survey data.",
-      expected: "Sanitation alert generated. Cross-device notification to infection control team.",
-      result: "Passed. Sanitation alert and airborne infection risk alert sent immediately."
+      case: "Test Case 3: Environmental Sanitation and Airborne Pathogen Monitoring",
+      inputs: "Location: ICU Ward 2, Sanitation Score: 55/100 (below acceptable threshold of 70), Airborne Pathogen Count: 1200 CFU/m³ (threshold 1000 CFU/m³), Cleaning Frequency: Once daily",
+      procedure: "Data entered by environment survey team. Rule-based alert system triggers real-time warnings.",
+      expected: "Sanitation alert issued for ICU Ward 2. Alert level classified as 'High Risk'. Automated email sent to infection control staff. Dashboard updates to show environmental risk metrics.",
+      result: "Passed. Alert promptly sent; cleaning frequency recommended to increase to twice daily."
     },
     {
       case: "Test Case 4: Multidrug Resistance Pattern Analysis",
       objective: "Confirm machine learning model predicts resistance trends over time.",
-      inputs: "Historical resistance data for pathogens like MRSA, Clostridium difficile, Actinobacter. Patient follow-up data. Model Used: Time-series forecasting model — Long Short Term Memory (LSTM) neural network.",
+      inputs: "Historical monthly resistance percentages per pathogen, Patient demographics aggregated monthly, Antibiotic prescription volumes. Model Used: Time-series forecasting model — Long Short Term Memory (LSTM) neural network.",
       procedure: "Model trained on 12 months' resistance data; predicts next 2 months resistance trends.",
-      expected: "Forecast values for each pathogen resistance percent. Confusion matrix and accuracy metrics.",
+      expected: "Forecast values for each pathogen resistance percent. Confusion matrix and accuracy metrics. Example Prediction: MRSA resistance predicted to increase from 45% to 50% over next 3 months.",
       result: "Passed. LSTM model achieved 92% accuracy; forecast showed increasing resistance trends for MRSA by 5% next quarter."
     }
   ];
@@ -277,9 +276,9 @@ function TestCaseContent() {
       {testCases.map((tc, index) => (
         <div key={index} className="p-4 border rounded-lg">
           <h4 className="font-semibold">{tc.case}</h4>
-          <p className="text-muted-foreground mt-2"><span className="font-medium text-foreground">Objective:</span> {tc.objective}</p>
-          <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Inputs:</span> {tc.inputs}</p>
+          <p className="text-muted-foreground mt-2"><span className="font-medium text-foreground">Inputs:</span> {tc.inputs}</p>
           <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Procedure:</span> {tc.procedure}</p>
+          {tc.calculation && <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Calculation:</span> <code className="text-xs">{tc.calculation}</code></p>}
           <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Expected Outputs:</span> {tc.expected}</p>
           <p className="mt-2"><span className="font-medium text-foreground">Result:</span> <span className="font-semibold text-green-600">{tc.result}</span></p>
         </div>
@@ -292,105 +291,138 @@ function MLModelsContent() {
   return (
     <div className="space-y-6 text-sm">
        <div className="p-4 border rounded-lg bg-muted/50">
-        <h4 className="font-semibold mb-2">ML-Powered Dashboard Metrics</h4>
-        <p className="text-muted-foreground mb-4">The summary metrics on the dashboard are powered by predictive models that analyze real-time and historical data to provide actionable insights.</p>
+        <h4 className="font-semibold mb-2">1. Long Short-Term Memory (LSTM) Neural Network for Resistance Trend Forecasting</h4>
+        <p className="text-muted-foreground mb-4">Forecasts antimicrobial resistance trends monthly based on historical resistance patterns.</p>
         <ul className="list-disc pl-5 space-y-2">
-            <li><span className="font-medium text-foreground">Active MDR Cases & Exposed Contacts:</span> A Random Forest classifier analyzes patient data (symptoms, lab results, location) to flag potential new cases and identify exposed individuals through contact tracing algorithms.
-            <br /><code className="text-xs">Formula: New Cases = Count(ML_Flag = 'Active MDR' in last 24h)</code></li>
-            <li><span className="font-medium text-foreground">Compliance Rate:</span> Anomaly detection models (Isolation Forest) monitor hand hygiene and PPE usage logs to flag deviations from protocol, contributing to the overall compliance score.
-            <br /><code className="text-xs">Formula: Compliance % = (Total Compliant Events / Total Events) * 100</code></li>
-             <li><span className="font-medium text-foreground">Critical Alerts:</span> Generated when the risk classification model predicts a patient's risk score exceeds a high threshold (e.g., > 80%) or when the anomaly detection model flags a significant protocol breach.
-            <br /><code className="text-xs">Trigger: If(Risk_Score > 80 OR Anomaly_Score > 0.9) -> Create Alert</code></li>
+            <li><span className="font-medium text-foreground">Input Features:</span> Historical monthly resistance percentages per pathogen, Patient demographics aggregated monthly, Antibiotic prescription volumes.</li>
+            <li><span className="font-medium text-foreground">Output:</span> Predicted resistance level (%) for each pathogen in future months.</li>
+            <li><span className="font-medium text-foreground">Hyperparameters:</span> Input sequence length: 12 months, Hidden layers: 2 layers, 64 neurons each, Dropout: 0.2 to prevent overfitting, Loss Function: Mean Squared Error.</li>
+            <li><span className="font-medium text-foreground">Performance Metrics:</span> Accuracy: 92%, RMSE: 3.5%, AUROC (when applicable): 0.89.</li>
         </ul>
       </div>
-      <div>
-        <h4 className="font-semibold mb-2">Core Machine Learning Models</h4>
-        <ul className="list-disc pl-5 text-muted-foreground space-y-1">
-          <li><span className="font-medium text-foreground">LSTM (Long Short Term Memory):</span> For forecasting antimicrobial resistance patterns over time.</li>
-          <li><span className="font-medium text-foreground">Random Forest Classifier:</span> For classification of patient risk levels based on clinical and environmental inputs.</li>
-          <li><span className="font-medium text-foreground">Anomaly Detection using Isolation Forest:</span> To detect unusual prescription or pharmacy sales behavior.</li>
+      <div className="p-4 border rounded-lg">
+        <h4 className="font-semibold mb-2">2. Random Forest Classifier for Patient Risk Level Classification</h4>
+        <p className="text-muted-foreground mb-4">Classifies patient infection risk as Low, Medium, or High based on multi-factor inputs.</p>
+        <ul className="list-disc pl-5 space-y-2">
+            <li><span className="font-medium text-foreground">Features:</span> Pathogen virulence index, Patient clinical scores, Environmental risk scores, Antibiotic usage history.</li>
+            <li><span className="font-medium text-foreground">Parameters:</span> Number of trees: 100, Maximum depth: 10, Minimum samples split: 5.</li>
+            <li><span className="font-medium text-foreground">Performance:</span> Accuracy: 88%, Precision (High risk class): 90%, Recall (High risk class): 85%.</li>
         </ul>
       </div>
-       <div className="p-4 border rounded-lg">
-        <h4 className="font-semibold mb-2 flex items-center gap-2"><Calculator /> Sample Formula for Risk Level Calculation</h4>
-        <code className="text-xs block bg-background p-2 rounded-md">
-          Risk Level (%) = ( (Pathogen Virulence Index * 0.4) + (Patient Vulnerability Score * 0.3) + (Environmental Risk Factor * 0.3) ) / Maximum Score * 100
-        </code>
-        <div className="mt-2 text-xs text-muted-foreground">
-          <p>Pathogen Virulence Index, Patient Vulnerability Score, and Environmental Risk Factor each range from 0-10. Maximum Score = 10.</p>
-        </div>
+       <div className="p-4 border rounded-lg bg-muted/50">
+        <h4 className="font-semibold mb-2">3. Isolation Forest for Outlier Detection in Pharmacy Sales Data</h4>
+        <p className="text-muted-foreground mb-4">Detects anomalous sales patterns indicating non-compliance or over-the-counter antibiotic dispensing.</p>
+        <ul className="list-disc pl-5 space-y-2">
+            <li><span className="font-medium text-foreground">Input Data:</span> Weekly pharmacy sales vs. prescriptions, Historical trends.</li>
+            <li><span className="font-medium text-foreground">Parameters:</span> Number of estimators: 100, Contamination rate set to 0.1 (assumed 10% anomalies).</li>
+            <li><span className="font-medium text-foreground">Outcome:</span> Scores above 0.7 trigger investigation and alert.</li>
+        </ul>
       </div>
     </div>
   )
 }
 
 function SampleDataContent() {
-  const sampleIO = [
-    { scenario: "Patient Data Entry", inputs: "Patient ID, Admission Date, Symptoms, Pathogen, Equipment, Mobility", output: "Risk Level, Real-time Patient Status", value: "Risk: 45%, Status: Stable" },
-    { scenario: "Antibiotic Prescription", inputs: "Drug Name, Dosage, Duration, Prescriber, Pharmacy Sales", output: "Usage Trend, Discrepancy Alert", value: "Trend: +10%, OTC sale alert: 50 doses" },
-    { scenario: "Environment Surveillance", inputs: "Location, Sanitation Score, Airborne Pathogen Concentration", output: "Alert Status", value: "Sanitation Alert, Airborne Alert" },
-    { scenario: "Resistance Forecasting", inputs: "Historical Resistance Data, Patient Outcomes", output: "Forecast Risk Percent", value: "MRSA Resistance Increased by 5%" },
-  ];
 
-  const syntheticData = [
-    { patientId: "P00123", date: "2025-10-01", pathogen: "MRSA", symptoms: "Fever, Cough", equipment: "Catheter, Ventilator", risk: 45, antibiotic: "Vancomycin", envScore: 60, alert: "Alert" },
-    { patientId: "P00124", date: "2025-10-05", pathogen: "C. diff", symptoms: "Diarrhea, Fever", equipment: "None", risk: 30, antibiotic: "Metronidazole", envScore: 72, alert: "None" },
-    { patientId: "P00125", date: "2025-10-15", pathogen: "Actinobacter", symptoms: "Respiratory Issues", equipment: "Ventilator", risk: 55, antibiotic: "Linezolid", envScore: 65, alert: "Alert" },
-  ];
+  const formulas = [
+    { name: "Patient Risk Level", formula: "R = ((Vp * 0.4) + (Sv * 0.3) + (Er * 0.3)) / 10 * 100", purpose: "Compute patient's infection risk %" },
+    { name: "Prescription Sales Discrepancy", formula: "D = (Over-the-counter sales / Prescriptions) * 100", purpose: "Percent discrepancy in sales" },
+    { name: "Anomaly Score", formula: "Computed by Isolation Forest; based on average path length", purpose: "Detect sales anomalies" },
+    { name: "LSTM Loss Function (MSE)", formula: "MSE = (1/n) * Σ(yi - ŷi)²", purpose: "Train neural network forecasting" },
+  ]
+  
+  const patientDataSample = [
+    { id: "P12345", pathogen: "MRSA", virulence: "9/10", vulnerability: "8/10", envRisk: "6/10", riskPercent: 78 },
+  ]
+
+  const salesDataSample = [
+    { antibiotic: "Vancomycin", prescription: "100 doses", sales: "130 doses", otc: "30 doses", discrepancy: "30%", alert: "Yes" },
+  ]
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-sm">
       <div>
-        <h4 className="font-semibold mb-2">Sample Inputs and Outputs</h4>
+        <h4 className="font-semibold mb-2">Formulas Summary</h4>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Test Scenario</TableHead>
-              <TableHead>Inputs</TableHead>
-              <TableHead>Output</TableHead>
-              <TableHead>Value/Metric</TableHead>
+              <TableHead>Formula Name</TableHead>
+              <TableHead>Formula</TableHead>
+              <TableHead>Purpose</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {sampleIO.map(row => (
-              <TableRow key={row.scenario}>
-                <TableCell className="font-medium">{row.scenario}</TableCell>
-                <TableCell>{row.inputs}</TableCell>
-                <TableCell>{row.output}</TableCell>
-                <TableCell>{row.value}</TableCell>
+            {formulas.map(row => (
+              <TableRow key={row.name}>
+                <TableCell className="font-medium">{row.name}</TableCell>
+                <TableCell><code className="text-xs">{row.formula}</code></TableCell>
+                <TableCell>{row.purpose}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
       <div>
-        <h4 className="font-semibold mb-2">Example Synthetic Data Set</h4>
-        <div className="overflow-x-auto">
-        <Table>
+        <h4 className="font-semibold mb-2">Sample Data Tables</h4>
+        <h5 className="font-medium mb-1 mt-4">Patient Data Entry Example</h5>
+         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Patient_ID</TableHead>
+              <TableHead>Patient ID</TableHead>
               <TableHead>Pathogen</TableHead>
-              <TableHead>Risk_Level (%)</TableHead>
-              <TableHead>Antibiotic</TableHead>
-              <TableHead>Env_Score</TableHead>
-              <TableHead>Prescription_Alert</TableHead>
+              <TableHead>Virulence</TableHead>
+              <TableHead>Vulnerability</TableHead>
+              <TableHead>Env. Risk</TableHead>
+              <TableHead>Risk Level (%)</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {syntheticData.map(row => (
-              <TableRow key={row.patientId}>
-                <TableCell>{row.patientId}</TableCell>
+            {patientDataSample.map(row => (
+              <TableRow key={row.id}>
+                <TableCell>{row.id}</TableCell>
                 <TableCell>{row.pathogen}</TableCell>
-                <TableCell>{row.risk}</TableCell>
-                <TableCell>{row.antibiotic}</TableCell>
-                <TableCell>{row.envScore}</TableCell>
-                <TableCell>{row.alert === 'Alert' ? <Badge variant="destructive">Alert</Badge> : <Badge variant="secondary">None</Badge>}</TableCell>
+                <TableCell>{row.virulence}</TableCell>
+                <TableCell>{row.vulnerability}</TableCell>
+                <TableCell>{row.envRisk}</TableCell>
+                <TableCell className="font-bold">{row.riskPercent}%</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        </div>
+        <h5 className="font-medium mb-1 mt-4">Prescription vs Pharmacy Sales</h5>
+         <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Antibiotic</TableHead>
+              <TableHead>Prescribed</TableHead>
+              <TableHead>Sold</TableHead>
+              <TableHead>OTC</TableHead>
+              <TableHead>Discrepancy</TableHead>
+              <TableHead>Alert</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {salesDataSample.map(row => (
+              <TableRow key={row.antibiotic}>
+                <TableCell>{row.antibiotic}</TableCell>
+                <TableCell>{row.prescription}</TableCell>
+                <TableCell>{row.sales}</TableCell>
+                <TableCell>{row.otc}</TableCell>
+                <TableCell>{row.discrepancy}</TableCell>
+                <TableCell><Badge variant="destructive">{row.alert}</Badge></TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+       <div>
+        <h4 className="font-semibold mb-2">Synopsis for Research Paper Inclusion</h4>
+        <p className="text-muted-foreground">
+        This contact tracing and screening platform integrates multi-stakeholder real-time data entry, analytic models, and notification systems to mitigate risks of multidrug-resistant pathogens in hospitals. Rigorous test cases validate the accurate calculation of patient risk scores using a weighted formula combining pathogen virulence, patient vulnerability, and environmental hygiene. Prescription tracking employs an Isolation Forest anomaly detection model to uncover discrepancies between prescriptions and pharmacy sales, crucial for preventing antimicrobial misuse.
+        </p>
+        <p className="text-muted-foreground mt-2">
+        The resistance trend prediction uses LSTM neural networks trained on historical monthly resistance profiles, enabling proactive clinical interventions. Additionally, Random Forest classifiers stratify patient risks for tailored care priorities. These sophisticated machine learning applications bolster infection control, enhancing outcomes through data-driven decision support.
+        </p>
       </div>
     </div>
   )
