@@ -56,6 +56,14 @@ const patientData = [
     morbidities: "Hypertension",
     risk: 45,
   },
+    {
+    id: "P00123",
+    ward: "Ward C",
+    bed: "15B",
+    status: "Active MDR",
+    morbidities: "Fever, cough",
+    risk: 45,
+  },
   {
     id: "P312",
     ward: "Ward A",
@@ -67,10 +75,10 @@ const patientData = [
 ];
 
 const summaryData = [
-    { metric: "Active MDR Cases", value: "12", change: "+2 from last week", justification: "Represents the total number of patients with a confirmed, active multidrug-resistant infection. This is a direct count from patient data where status is 'Active MDR'." },
-    { metric: "Exposed Contacts", value: "45", change: "-5 from last week", justification: "Includes patients and staff who have come into contact with an active MDR case but have not tested positive. This is derived from contact tracing data." },
-    { metric: "Compliance Rate", value: "98%", change: "+1.2% from last week", justification: "Measures adherence to infection control protocols (e.g., hand hygiene, PPE usage) as logged by the AMSP and EVST teams. It is calculated as (Compliant Events / Total Events) * 100." },
-    { metric: "Critical Alerts", value: "3", change: "N/A", justification: "A count of high-priority, unresolved alerts, such as new high-risk patient flags or significant protocol breaches, generated in the last 24 hours." },
+    { metric: "Active MDR Cases", value: "12", change: "+2 from last week", justification: "A Random Forest classifier analyzes patient data (symptoms, lab results, location) to flag potential new cases. The count is the total number of patients with status 'Active MDR'. Change is calculated vs. the previous 7-day period." },
+    { metric: "Exposed Contacts", value: "45", change: "-5 from last week", justification: "Derived from contact tracing algorithms that analyze location and time proximity data between an active case and other individuals. Includes both patients and staff." },
+    { metric: "Compliance Rate", value: "98%", change: "+1.2% from last week", justification: "An Anomaly Detection model (Isolation Forest) monitors hand hygiene and PPE usage logs to flag deviations from protocol. The rate is calculated as `(Compliant Events / Total Events) * 100`." },
+    { metric: "Critical Alerts", value: "3", change: "N/A", justification: "A direct count of unresolved, high-priority alerts generated in the last 24 hours. An alert is deemed critical if a patient's risk score (from the classification model) exceeds 80% or a significant protocol breach is detected." },
 ];
 
 
@@ -128,7 +136,7 @@ export default function AnalyticsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {patientData.map((patient) => (
+                {patientData.sort((a,b) => b.risk - a.risk).map((patient) => (
                   <TableRow key={patient.id}>
                     <TableCell className="font-medium">{patient.id}</TableCell>
                     <TableCell>{patient.ward}</TableCell>
@@ -147,7 +155,7 @@ export default function AnalyticsPage() {
           <CardHeader>
             <CardTitle>Dashboard Summary Metrics</CardTitle>
             <CardDescription>
-              This table explains the values presented in the summary cards on the main dashboard, providing justification for how each metric is derived from the underlying data.
+              This table explains the values presented in the summary cards on the main dashboard, providing justification for how each metric is derived from the underlying data and ML models.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -157,7 +165,7 @@ export default function AnalyticsPage() {
                         <TableHead>Metric</TableHead>
                         <TableHead>Value</TableHead>
                         <TableHead>Change</TableHead>
-                        <TableHead>Justification</TableHead>
+                        <TableHead>Justification &amp; Calculation</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

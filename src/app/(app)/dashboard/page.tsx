@@ -295,7 +295,7 @@ function MLModelsContent() {
         <h4 className="font-semibold mb-2">ML-Powered Dashboard Metrics</h4>
         <p className="text-muted-foreground mb-4">The summary metrics on the dashboard are powered by predictive models that analyze real-time and historical data to provide actionable insights.</p>
         <ul className="list-disc pl-5 space-y-2">
-            <li><span className="font-medium text-foreground">Active MDR Cases & Exposed Contacts:</span> A Random Forest classifier analyzes patient data (symptoms, lab results, location) to flag potential new cases and identify exposed individuals through contact tracing algorithms. The change is calculated by comparing with the previous 24-hour window.
+            <li><span className="font-medium text-foreground">Active MDR Cases & Exposed Contacts:</span> A Random Forest classifier analyzes patient data (symptoms, lab results, location) to flag potential new cases and identify exposed individuals through contact tracing algorithms.
             <br /><code className="text-xs">Formula: New Cases = Count(ML_Flag = 'Active MDR' in last 24h)</code></li>
             <li><span className="font-medium text-foreground">Compliance Rate:</span> Anomaly detection models (Isolation Forest) monitor hand hygiene and PPE usage logs to flag deviations from protocol, contributing to the overall compliance score.
             <br /><code className="text-xs">Formula: Compliance % = (Total Compliant Events / Total Events) * 100</code></li>
