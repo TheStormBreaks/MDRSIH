@@ -150,16 +150,6 @@ export default function DashboardPage() {
                 <SampleDataContent />
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="item-4">
-              <AccordionTrigger>
-                <div className="flex items-center gap-2"><FileText /> Summary for Paper</div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <p className="text-sm text-muted-foreground">
-                  This digital contact tracing and screening tool effectively supports hospital stakeholders in managing multidrug-resistant pathogen risks via real-time data entry, analytics, and alerts. The integrated machine learning models, particularly LSTM for resistance forecasting and Random Forest for risk classification, provide proactive insights to curb infection spread and antibiotic misuse. Test cases demonstrate the system's responsiveness, accuracy, and ability to generate actionable alerts, validated through synthetic data and comprehensive analytics.
-                </p>
-              </AccordionContent>
-            </AccordionItem>
           </Accordion>
         </CardContent>
       </Card>
@@ -249,32 +239,36 @@ function EnvironmentResults() {
 function TestCaseContent() {
   const testCases = [
     {
-      case: "Patient Data Entry and Tracking",
+      case: "Test Case 1: Patient Data Entry and Tracking",
       objective: "Verify accurate data entry of patient clinical data and pathogen details.",
-      inputs: "Patient ID: P00123, Date: 2025-10-15, Pathogen: MRSA, Symptoms: Fever, etc.",
-      expected: "Real-time update, Risk level calculated at 45%, Alert generated if risk > 40%.",
-      result: "Passed. Data reflected immediately; risk 45%; alert generated."
+      inputs: "Patient ID: P00123, Date of Admission: 2025-10-15, Suspected Pathogen: Methicillin-resistant Staphylococcus aureus (MRSA), Symptoms: Fever, cough, shortness of breath, Equipment Used: Catheter, Ventilator, Mobility Status: Stable",
+      procedure: "The clinician enters the above data and observes if data is captured correctly in the system.",
+      expected: "Real-time update across doctor, pharmacist, AMSP, and environment teams. Risk level calculated at 45% based on patient and pathogen profile. Alert generated if risk > 40%.",
+      result: "Passed. Data reflected immediately in dashboard; risk level 45%; alert generated."
     },
     {
-      case: "Prescription Tracking and Antimicrobial Use Monitoring",
+      case: "Test Case 2: Prescription Tracking and Antimicrobial Use Monitoring",
       objective: "Test the prescription entry for antibiotics and tracking of usage.",
-      inputs: "Prescription: Vancomycin, Dosage: 1g twice daily, 7 days. Pharmacy sales: 200 doses sold, 150 prescribed.",
-      expected: "Discrepancy alert for 50 doses sold over the counter. Usage trend graph updated.",
-      result: "Passed. Alert raised on OTC sales; graph shows +10% usage week over week."
+      inputs: "Prescription: Vancomycin, Dosage: 1g twice daily, Duration: 7 days, Prescribed by Dr. A, Pharmacy sales data: 200 doses sold, 150 prescribed",
+      procedure: "Enter prescription, cross-check data with pharmacy sales.",
+      expected: "Discrepancy alert for 50 doses sold over the counter without prescription. Usage trend graph updated.",
+      result: "Passed. Alert raised on over-the-counter sales; graph shows usage trend increase of 10% week over week."
     },
     {
-      case: "Environment Surveillance and Alerting",
+      case: "Test Case 3: Environment Surveillance and Alerting",
       objective: "Validate environmental data entry and alert generation in case of poor sanitation.",
-      inputs: "Location: ICU Ward 3, Sanitation Score: 60/100 (threshold 70), Airborne pathogen: 80/100.",
+      inputs: "Location: ICU Ward 3, Sanitation Score: 60/100 (below threshold of 70), Airborne pathogen concentration: Elevated with score 80/100",
+      procedure: "Environmental team enters survey data.",
       expected: "Sanitation alert generated. Cross-device notification to infection control team.",
-      result: "Passed. Sanitation and airborne risk alerts sent immediately."
+      result: "Passed. Sanitation alert and airborne infection risk alert sent immediately."
     },
     {
-      case: "Multidrug Resistance Pattern Analysis",
+      case: "Test Case 4: Multidrug Resistance Pattern Analysis",
       objective: "Confirm machine learning model predicts resistance trends over time.",
-      inputs: "12 months of historical resistance data for MRSA, C. difficile, etc. LSTM model.",
-      expected: "Forecast values for resistance %, confusion matrix, and accuracy metrics.",
-      result: "Passed. LSTM model achieved 92% accuracy; forecast showed MRSA resistance increasing by 5% next quarter."
+      inputs: "Historical resistance data for pathogens like MRSA, Clostridium difficile, Actinobacter. Patient follow-up data. Model Used: Time-series forecasting model — Long Short Term Memory (LSTM) neural network.",
+      procedure: "Model trained on 12 months' resistance data; predicts next 2 months resistance trends.",
+      expected: "Forecast values for each pathogen resistance percent. Confusion matrix and accuracy metrics.",
+      result: "Passed. LSTM model achieved 92% accuracy; forecast showed increasing resistance trends for MRSA by 5% next quarter."
     }
   ];
 
@@ -283,8 +277,11 @@ function TestCaseContent() {
       {testCases.map((tc, index) => (
         <div key={index} className="p-4 border rounded-lg">
           <h4 className="font-semibold">{tc.case}</h4>
-          <p className="text-muted-foreground"><span className="font-medium text-foreground">Objective:</span> {tc.objective}</p>
-          <p className="text-muted-foreground"><span className="font-medium text-foreground">Result:</span> <span className="font-semibold text-green-600">{tc.result}</span></p>
+          <p className="text-muted-foreground mt-2"><span className="font-medium text-foreground">Objective:</span> {tc.objective}</p>
+          <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Inputs:</span> {tc.inputs}</p>
+          <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Procedure:</span> {tc.procedure}</p>
+          <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Expected Outputs:</span> {tc.expected}</p>
+          <p className="mt-2"><span className="font-medium text-foreground">Result:</span> <span className="font-semibold text-green-600">{tc.result}</span></p>
         </div>
       ))}
     </div>
@@ -396,5 +393,3 @@ function SampleDataContent() {
     </div>
   )
 }
-
-    
