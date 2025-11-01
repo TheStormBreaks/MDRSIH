@@ -249,7 +249,7 @@ function TestCaseContent() {
     {
       case: "Test Case 2: Prescription Tracking and Antimicrobial Use Monitoring",
       objective: "Test the prescription entry for antibiotics and tracking of usage.",
-      inputs: "Prescription: Vancomycin, Dosage: 1g twice daily, Duration: 7 days, Prescribed by Dr. A, Pharmacy sales data: 200 doses sold, 150 prescribed",
+      inputs: "Patient ID: P00124, Prescription: Vancomycin, Dosage: 1g twice daily, Duration: 7 days, Prescribed by Dr. A, Pharmacy sales data: 200 doses sold, 150 prescribed",
       procedure: "Enter prescription, cross-check data with pharmacy sales.",
       expected: "Discrepancy alert for 50 doses sold over the counter without prescription. Usage trend graph updated.",
       result: "Passed. Alert raised on over-the-counter sales; graph shows usage trend increase of 10% week over week."

@@ -37,6 +37,14 @@ const patientData = [
     morbidities: "N/A",
   },
   {
+    id: "P00123",
+    ward: "Ward C",
+    bed: "15B",
+    risk: 45,
+    status: "Active MDR",
+    morbidities: "Fever, cough",
+  },
+  {
     id: "P604",
     ward: "Ward C",
     bed: "07A",
