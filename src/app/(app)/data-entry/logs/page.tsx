@@ -399,7 +399,7 @@ function TestCaseContent() {
     {
       case: "Test Case 2: Antimicrobial Prescription Entry and Sales Monitoring",
       inputs: "Antibiotic: Vancomycin, Dosage: 1g twice daily, Duration: 7 days, Prescription entered by Dr. Smith, Pharmacy Sales Data (last 1 week): Prescriptions documented: 100 doses, Over-the-counter sales detected: 30 doses",
-      procedure: "Prescription tracked and matched with pharmacy sales. Isolation Forest anomaly detection algorithm applied to identify unusual sales patterns.",
+      procedure: "Prescription tracked and matched with pharmacy sales. Isolation Forest anomaly detection algorithm applied to identify unusual sales patterns. Discrepancy calculated as D = (OTC_sales / Prescriptions) * 100.",
       expected: "Alert raised for 30% discrepancy. Sales trend graphed weekly to monitor changes. Notification sent to pharmaceutical oversight.",
       result: "Passed. Alert generated; trend analysis indicates rising over-the-counter sales by +5% from prior week."
     },
@@ -410,12 +410,13 @@ function TestCaseContent() {
       expected: "Sanitation alert issued for ICU Ward 2. Alert level classified as 'High Risk'. Automated email sent to infection control staff. Dashboard updates to show environmental risk metrics.",
       result: "Passed. Alert promptly sent; cleaning frequency recommended to increase to twice daily."
     },
-    {
+     {
       case: "Test Case 4: Multidrug Resistance Pattern Analysis",
       objective: "Confirm machine learning model predicts resistance trends over time.",
-      inputs: "Historical monthly resistance percentages per pathogen, Patient demographics aggregated monthly, Antibiotic prescription volumes. Model Used: Time-series forecasting model — Long Short Term Memory (LSTM) neural network.",
+      inputs: "Historical monthly resistance data for pathogens like MRSA, Clostridium difficile, Actinobacter. Patient follow-up data.",
+      model: "Time-series forecasting model — Long Short Term Memory (LSTM) neural network.",
       procedure: "Model trained on 12 months' resistance data; predicts next 2 months resistance trends.",
-      expected: "Forecast values for each pathogen resistance percent. Confusion matrix and accuracy metrics. Example Prediction: MRSA resistance predicted to increase from 45% to 50% over next 3 months.",
+      expected: "Forecast values for each pathogen resistance percent. Confusion matrix and accuracy metrics.",
       result: "Passed. LSTM model achieved 92% accuracy; forecast showed increasing resistance trends for MRSA by 5% next quarter."
     }
   ];
@@ -427,7 +428,7 @@ function TestCaseContent() {
           <h4 className="font-semibold">{tc.case}</h4>
           <p className="text-muted-foreground mt-2"><span className="font-medium text-foreground">Inputs:</span> {tc.inputs}</p>
           <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Procedure:</span> {tc.procedure}</p>
-          {tc.calculation && <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Calculation:</span> <code className="text-xs">{tc.calculation}</code></p>}
+          {tc.calculation && <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Calculation:</span> <code className="text-xs bg-muted p-1 rounded-sm">{tc.calculation}</code></p>}
           <p className="text-muted-foreground mt-1"><span className="font-medium text-foreground">Expected Outputs:</span> {tc.expected}</p>
           <p className="mt-2"><span className="font-medium text-foreground">Result:</span> <span className="font-semibold text-green-600">{tc.result}</span></p>
         </div>
@@ -447,6 +448,7 @@ function MLModelsContent() {
             <li><span className="font-medium text-foreground">Output:</span> Predicted resistance level (%) for each pathogen in future months.</li>
             <li><span className="font-medium text-foreground">Hyperparameters:</span> Input sequence length: 12 months, Hidden layers: 2 layers, 64 neurons each, Dropout: 0.2 to prevent overfitting, Loss Function: Mean Squared Error.</li>
             <li><span className="font-medium text-foreground">Performance Metrics:</span> Accuracy: 92%, RMSE: 3.5%, AUROC (when applicable): 0.89.</li>
+             <li><span className="font-medium text-foreground">Example Prediction:</span> MRSA resistance predicted to increase from 45% to 50% over next 3 months.</li>
         </ul>
       </div>
       <div className="p-4 border rounded-lg">
@@ -477,15 +479,15 @@ function SampleDataContent() {
     { name: "Prescription Sales Discrepancy", formula: "D = (Over-the-counter sales / Prescriptions) * 100", purpose: "Percent discrepancy in sales" },
     { name: "Anomaly Score", formula: "Computed by Isolation Forest; based on average path length", purpose: "Detect sales anomalies" },
     { name: "LSTM Loss Function (MSE)", formula: "MSE = (1/n) * Σ(yi - ŷi)²", purpose: "Train neural network forecasting" },
-  ]
+  ];
   
   const patientDataSample = [
-    { id: "P12345", pathogen: "MRSA", virulence: "9/10", vulnerability: "8/10", envRisk: "6/10", riskPercent: 74 },
-  ]
+    { patientId: "P12345", pathogen: "MRSA", virulence: "9/10", vulnerability: "8/10", envRisk: "6/10", riskPercent: 74 },
+  ];
 
   const salesDataSample = [
     { antibiotic: "Vancomycin", prescription: "100 doses", sales: "130 doses", otc: "30 doses", discrepancy: "30%", alert: "Yes" },
-  ]
+  ];
 
   return (
     <div className="space-y-6 text-sm">
@@ -511,7 +513,7 @@ function SampleDataContent() {
         </Table>
       </div>
       <div>
-        <h4 className="font-semibold mb-2">Sample Data Tables</h4>
+        <h4 className="font-semibold mb-2">Sample Tables</h4>
         <h5 className="font-medium mb-1 mt-4">Patient Data Entry Example</h5>
          <Table>
           <TableHeader>
@@ -521,13 +523,13 @@ function SampleDataContent() {
               <TableHead>Virulence</TableHead>
               <TableHead>Vulnerability</TableHead>
               <TableHead>Env. Risk</TableHead>
-              <TableHead>Risk Level (%)</TableHead>
+              <TableHead>Calculated Risk (%)</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {patientDataSample.map(row => (
-              <TableRow key={row.id}>
-                <TableCell>{row.id}</TableCell>
+              <TableRow key={row.patientId}>
+                <TableCell>{row.patientId}</TableCell>
                 <TableCell>{row.pathogen}</TableCell>
                 <TableCell>{row.virulence}</TableCell>
                 <TableCell>{row.vulnerability}</TableCell>
