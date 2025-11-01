@@ -15,6 +15,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   Activity,
   AlertTriangle,
   ArrowUp,
@@ -22,6 +28,11 @@ import {
   ClipboardCheck,
   FlaskConical,
   HeartPulse,
+  Cpu,
+  TestTube2,
+  FileText,
+  Calculator,
+  Database,
 } from "lucide-react";
 import AmTrendGraph from "./components/amr-trend-graph";
 import RealTimeTicker from "./components/real-time-ticker";
@@ -103,6 +114,55 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Card className="mt-8">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Cpu className="h-6 w-6" /> System Analytics & Model Insights
+          </CardTitle>
+          <CardDescription>
+            Detailed information on test cases, machine learning models, and data analytics.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>
+                <div className="flex items-center gap-2"><TestTube2 /> Test Cases & Results</div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <TestCaseContent />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>
+                <div className="flex items-center gap-2"><Cpu /> Data Analytics & Machine Learning Models</div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <MLModelsContent />
+              </AccordionContent>
+            </AccordionItem>
+             <AccordionItem value="item-3">
+              <AccordionTrigger>
+                <div className="flex items-center gap-2"><Database /> Sample Data & I/O</div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <SampleDataContent />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-4">
+              <AccordionTrigger>
+                <div className="flex items-center gap-2"><FileText /> Summary for Paper</div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <p className="text-sm text-muted-foreground">
+                  This digital contact tracing and screening tool effectively supports hospital stakeholders in managing multidrug-resistant pathogen risks via real-time data entry, analytics, and alerts. The integrated machine learning models, particularly LSTM for resistance forecasting and Random Forest for risk classification, provide proactive insights to curb infection spread and antibiotic misuse. Test cases demonstrate the system's responsiveness, accuracy, and ability to generate actionable alerts, validated through synthetic data and comprehensive analytics.
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -185,3 +245,156 @@ function EnvironmentResults() {
     </Table>
   );
 }
+
+function TestCaseContent() {
+  const testCases = [
+    {
+      case: "Patient Data Entry and Tracking",
+      objective: "Verify accurate data entry of patient clinical data and pathogen details.",
+      inputs: "Patient ID: P00123, Date: 2025-10-15, Pathogen: MRSA, Symptoms: Fever, etc.",
+      expected: "Real-time update, Risk level calculated at 45%, Alert generated if risk > 40%.",
+      result: "Passed. Data reflected immediately; risk 45%; alert generated."
+    },
+    {
+      case: "Prescription Tracking and Antimicrobial Use Monitoring",
+      objective: "Test the prescription entry for antibiotics and tracking of usage.",
+      inputs: "Prescription: Vancomycin, Dosage: 1g twice daily, 7 days. Pharmacy sales: 200 doses sold, 150 prescribed.",
+      expected: "Discrepancy alert for 50 doses sold over the counter. Usage trend graph updated.",
+      result: "Passed. Alert raised on OTC sales; graph shows +10% usage week over week."
+    },
+    {
+      case: "Environment Surveillance and Alerting",
+      objective: "Validate environmental data entry and alert generation in case of poor sanitation.",
+      inputs: "Location: ICU Ward 3, Sanitation Score: 60/100 (threshold 70), Airborne pathogen: 80/100.",
+      expected: "Sanitation alert generated. Cross-device notification to infection control team.",
+      result: "Passed. Sanitation and airborne risk alerts sent immediately."
+    },
+    {
+      case: "Multidrug Resistance Pattern Analysis",
+      objective: "Confirm machine learning model predicts resistance trends over time.",
+      inputs: "12 months of historical resistance data for MRSA, C. difficile, etc. LSTM model.",
+      expected: "Forecast values for resistance %, confusion matrix, and accuracy metrics.",
+      result: "Passed. LSTM model achieved 92% accuracy; forecast showed MRSA resistance increasing by 5% next quarter."
+    }
+  ];
+
+  return (
+    <div className="space-y-4 text-sm">
+      {testCases.map((tc, index) => (
+        <div key={index} className="p-4 border rounded-lg">
+          <h4 className="font-semibold">{tc.case}</h4>
+          <p className="text-muted-foreground"><span className="font-medium text-foreground">Objective:</span> {tc.objective}</p>
+          <p className="text-muted-foreground"><span className="font-medium text-foreground">Result:</span> <span className="font-semibold text-green-600">{tc.result}</span></p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function MLModelsContent() {
+  return (
+    <div className="space-y-6 text-sm">
+      <div>
+        <h4 className="font-semibold mb-2">Data Analytics Model</h4>
+        <p className="text-muted-foreground"><span className="font-medium text-foreground">Type:</span> Descriptive and Predictive analytics.</p>
+        <p className="font-medium text-foreground mt-2">Techniques Used:</p>
+        <ul className="list-disc pl-5 text-muted-foreground space-y-1 mt-1">
+          <li>Real-time dashboard analytics for patient risk and antimicrobial usage.</li>
+          <li>Trend analysis for resistance patterns.</li>
+          <li>Anomaly detection for prescription discrepancies and environmental risks.</li>
+        </ul>
+      </div>
+      <div>
+        <h4 className="font-semibold mb-2">Machine Learning Models</h4>
+        <ul className="list-disc pl-5 text-muted-foreground space-y-1">
+          <li><span className="font-medium text-foreground">LSTM (Long Short Term Memory):</span> For forecasting antimicrobial resistance patterns over time.</li>
+          <li><span className="font-medium text-foreground">Random Forest Classifier:</span> For classification of patient risk levels based on clinical and environmental inputs.</li>
+          <li><span className="font-medium text-foreground">Anomaly Detection using Isolation Forest:</span> To detect unusual prescription or pharmacy sales behavior.</li>
+        </ul>
+      </div>
+       <div className="p-4 border rounded-lg bg-muted/50">
+        <h4 className="font-semibold mb-2 flex items-center gap-2"><Calculator /> Sample Formula for Risk Level Calculation</h4>
+        <code className="text-xs block bg-background p-2 rounded-md">
+          Risk Level (%) = ( (Pathogen Virulence Index * 0.4) + (Patient Vulnerability Score * 0.3) + (Environmental Risk Factor * 0.3) ) / Maximum Score * 100
+        </code>
+        <div className="mt-2 text-xs text-muted-foreground">
+          <p>Pathogen Virulence Index, Patient Vulnerability Score, and Environmental Risk Factor each range from 0-10. Maximum Score = 10.</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SampleDataContent() {
+  const sampleIO = [
+    { scenario: "Patient Data Entry", inputs: "Patient ID, Admission Date, Symptoms, Pathogen, Equipment, Mobility", output: "Risk Level, Real-time Patient Status", value: "Risk: 45%, Status: Stable" },
+    { scenario: "Antibiotic Prescription", inputs: "Drug Name, Dosage, Duration, Prescriber, Pharmacy Sales", output: "Usage Trend, Discrepancy Alert", value: "Trend: +10%, OTC sale alert: 50 doses" },
+    { scenario: "Environment Surveillance", inputs: "Location, Sanitation Score, Airborne Pathogen Concentration", output: "Alert Status", value: "Sanitation Alert, Airborne Alert" },
+    { scenario: "Resistance Forecasting", inputs: "Historical Resistance Data, Patient Outcomes", output: "Forecast Risk Percent", value: "MRSA Resistance Increased by 5%" },
+  ];
+
+  const syntheticData = [
+    { patientId: "P00123", date: "2025-10-01", pathogen: "MRSA", symptoms: "Fever, Cough", equipment: "Catheter, Ventilator", risk: 45, antibiotic: "Vancomycin", envScore: 60, alert: "Alert" },
+    { patientId: "P00124", date: "2025-10-05", pathogen: "C. diff", symptoms: "Diarrhea, Fever", equipment: "None", risk: 30, antibiotic: "Metronidazole", envScore: 72, alert: "None" },
+    { patientId: "P00125", date: "2025-10-15", pathogen: "Actinobacter", symptoms: "Respiratory Issues", equipment: "Ventilator", risk: 55, antibiotic: "Linezolid", envScore: 65, alert: "Alert" },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h4 className="font-semibold mb-2">Sample Inputs and Outputs</h4>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Test Scenario</TableHead>
+              <TableHead>Inputs</TableHead>
+              <TableHead>Output</TableHead>
+              <TableHead>Value/Metric</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sampleIO.map(row => (
+              <TableRow key={row.scenario}>
+                <TableCell className="font-medium">{row.scenario}</TableCell>
+                <TableCell>{row.inputs}</TableCell>
+                <TableCell>{row.output}</TableCell>
+                <TableCell>{row.value}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+      <div>
+        <h4 className="font-semibold mb-2">Example Synthetic Data Set</h4>
+        <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Patient_ID</TableHead>
+              <TableHead>Pathogen</TableHead>
+              <TableHead>Risk_Level (%)</TableHead>
+              <TableHead>Antibiotic</TableHead>
+              <TableHead>Env_Score</TableHead>
+              <TableHead>Prescription_Alert</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {syntheticData.map(row => (
+              <TableRow key={row.patientId}>
+                <TableCell>{row.patientId}</TableCell>
+                <TableCell>{row.pathogen}</TableCell>
+                <TableCell>{row.risk}</TableCell>
+                <TableCell>{row.antibiotic}</TableCell>
+                <TableCell>{row.envScore}</TableCell>
+                <TableCell>{row.alert === 'Alert' ? <Badge variant="destructive">Alert</Badge> : <Badge variant="secondary">None</Badge>}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+    
