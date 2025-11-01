@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Cpu } from "lucide-react";
 
 const patientData = [
   {
@@ -179,6 +180,34 @@ export default function AnalyticsPage() {
                     ))}
                 </TableBody>
             </Table>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Cpu className="h-6 w-6" /> ML-Powered Dashboard Metrics
+            </CardTitle>
+            <CardDescription>
+              The summary metrics on the dashboard are powered by predictive models that analyze real-time and historical data to provide actionable insights.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm">
+            <div>
+              <h4 className="font-semibold">Active MDR Cases & Exposed Contacts</h4>
+              <p className="text-muted-foreground">A Random Forest classifier analyzes patient data (symptoms, lab results, location) to flag potential new cases and identify exposed individuals through contact tracing algorithms.</p>
+              <code className="text-xs block mt-1 p-2 bg-muted rounded">Formula: New Cases = Count(ML_Flag = 'Active MDR' in last 24h)</code>
+            </div>
+             <div>
+              <h4 className="font-semibold">Compliance Rate</h4>
+              <p className="text-muted-foreground">Anomaly detection models (Isolation Forest) monitor hand hygiene and PPE usage logs to flag deviations from protocol, contributing to the overall compliance score.</p>
+              <code className="text-xs block mt-1 p-2 bg-muted rounded">Formula: Compliance % = (Total Compliant Events / Total Events) * 100</code>
+            </div>
+             <div>
+              <h4 className="font-semibold">Critical Alerts</h4>
+              <p className="text-muted-foreground">Generated when the risk classification model predicts a patient's risk score exceeds a high threshold (e.g., > 80%) or when the anomaly detection model flags a significant protocol breach.</p>
+               <code className="text-xs block mt-1 p-2 bg-muted rounded">Trigger: If(Risk_Score > 80 OR Anomaly_Score > 0.9) -&gt; Create Alert</code>
+            </div>
           </CardContent>
         </Card>
       </div>
