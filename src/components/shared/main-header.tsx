@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Hospital, LayoutDashboard, FilePlus, Bell } from "lucide-react";
+import { Hospital, LayoutDashboard, FilePlus, Bell, BarChart } from "lucide-react";
 import { UserNav } from "./user-nav";
 import { Button } from "../ui/button";
 
@@ -26,6 +26,13 @@ export function MainHeader() {
             >
               <FilePlus className="mr-2 h-4 w-4" />
               Data Entry
+            </Link>
+            <Link
+              href="/analytics"
+              className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              <BarChart className="mr-2 h-4 w-4" />
+              Analytics
             </Link>
           </nav>
         </div>
