@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Hospital, LayoutDashboard, FilePlus, Bell, Database } from "lucide-react";
+import { Hospital, LayoutDashboard, FilePlus, Bell, Database, Footprints } from "lucide-react";
 import { UserNav } from "./user-nav";
 import { Button } from "../ui/button";
 
@@ -12,7 +12,7 @@ export function MainHeader() {
             <Hospital className="h-6 w-6 text-primary" />
             <span className="inline-block font-bold font-headline">PathoTrace</span>
           </Link>
-          <nav className="flex gap-6">
+          <nav className="hidden md:flex gap-6">
             <Link
               href="/dashboard"
               className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
@@ -28,6 +28,13 @@ export function MainHeader() {
               Data Entry
             </Link>
              <Link
+              href="/tracking"
+              className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              <Footprints className="mr-2 h-4 w-4" />
+              Tracking
+            </Link>
+             <Link
               href="/data-entry/logs"
               className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
             >
@@ -37,6 +44,32 @@ export function MainHeader() {
           </nav>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-4">
+           <nav className="flex md:hidden gap-2">
+             <Link
+              href="/dashboard"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              <LayoutDashboard className="h-5 w-5" />
+            </Link>
+            <Link
+              href="/data-entry"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              <FilePlus className="h-5 w-5" />
+            </Link>
+             <Link
+              href="/tracking"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              <Footprints className="h-5 w-5" />
+            </Link>
+             <Link
+              href="/data-entry/logs"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              <Database className="h-5 w-5" />
+            </Link>
+          </nav>
           <Button variant="ghost" size="icon">
             <Bell className="h-5 w-5" />
             <span className="sr-only">Notifications</span>
