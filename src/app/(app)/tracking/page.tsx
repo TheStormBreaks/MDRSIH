@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,7 +26,7 @@ export default function TrackingPage() {
 
       <Tabs defaultValue="floor1" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="floor1">Floor 1 (Live Animation)</TabsTrigger>
+          <TabsTrigger value="floor1">Floor 1 (Transmission Path)</TabsTrigger>
           <TabsTrigger value="floor2">Floor 2</TabsTrigger>
           <TabsTrigger value="floor3">Floor 3</TabsTrigger>
         </TabsList>
@@ -47,38 +48,70 @@ export default function TrackingPage() {
               <div className="absolute top-[20%] right-[15%] text-lg font-bold text-foreground">Surgical Ward</div>
               <div className="absolute bottom-[20%] left-[15%] text-lg font-bold text-foreground">General Ward A</div>
               <div className="absolute bottom-[20%] right-[15%] text-lg font-bold text-foreground">General Ward B</div>
+              
+              {/* Static SVG Overlay */}
+              <div className="absolute inset-0">
+                  <svg width="100%" height="100%" viewBox="0 0 1200 800">
+                    {/* Definitions for markers */}
+                    <defs>
+                        <marker id="arrow-doctor" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="hsl(var(--primary))" />
+                        </marker>
+                         <marker id="arrow-doctor-carrier" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="hsl(var(--accent))" />
+                        </marker>
+                         <marker id="arrow-nurse-carrier" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="hsl(var(--chart-2))" />
+                        </marker>
+                    </defs>
 
-              {/* Animated Scenario */}
-              <div id="animation-container" className="absolute inset-0">
-                {/* Static Patients */}
-                <div className="actor" style={{ top: '25%', left: '20%' }} title="Infected Patient">
-                  <BedDouble className="w-6 h-6 text-destructive" />
-                </div>
-                 <div className="actor" style={{ top: '25%', left: '25%' }} title="Patient">
-                  <BedDouble className="w-6 h-6 text-muted-foreground" />
-                </div>
-                 <div className="actor" style={{ top: '25%', left: '75%' }} title="Patient">
-                  <BedDouble className="w-6 h-6 text-muted-foreground" />
-                </div>
-                 <div className="actor" style={{ top: '65%', left: '20%' }} title="Patient">
-                  <BedDouble className="w-6 h-6 text-muted-foreground" />
-                </div>
-                <div className="actor patient-c-room" style={{ top: '65%', left: '75%' }}>
-                   <BedDouble className="w-6 h-6 text-muted-foreground" title="Patient C"/>
-                   <PersonStanding className="w-5 h-5 text-gray-500 absolute -top-4 left-6" title="Visitor"/>
-                </div>
+                    {/* Patient Locations */}
+                    <g transform="translate(240, 200)" title="Infected Patient">
+                        <BedDouble className="w-6 h-6 text-destructive" />
+                    </g>
+                     <g transform="translate(300, 200)" title="Patient">
+                        <BedDouble className="w-6 h-6 text-muted-foreground" />
+                    </g>
+                    <g transform="translate(900, 200)" title="Patient">
+                        <BedDouble className="w-6 h-6 text-muted-foreground" />
+                    </g>
+                     <g transform="translate(240, 520)" title="Patient">
+                        <BedDouble className="w-6 h-6 text-muted-foreground" />
+                    </g>
+                     <g transform="translate(900, 520)" title="Patient C">
+                        <BedDouble className="w-6 h-6 text-muted-foreground" />
+                    </g>
+                     <g transform="translate(950, 490)" title="Visitor">
+                        <PersonStanding className="w-5 h-5 text-gray-500" />
+                    </g>
 
-                {/* Animated Actors */}
-                <div id="doctor" className="actor" title="Doctor">
-                  <User className="w-6 h-6" />
-                </div>
-                <div id="nurse" className="actor" title="Nurse">
-                  <User className="w-6 h-6" />
-                </div>
+                    {/* Doctor's Path */}
+                    <path d="M 120 400 L 250 400 L 250 240" stroke="hsl(var(--primary))" strokeWidth="2" fill="none" strokeDasharray="5,5" markerEnd="url(#arrow-doctor)"/>
+                    <path d="M 250 240 L 250 400 L 580 400" stroke="hsl(var(--accent))" strokeWidth="2.5" fill="none" markerEnd="url(#arrow-doctor-carrier)"/>
+                    <g transform="translate(242, 232)" title="Doctor Contacts Patient"><User className="w-6 h-6 text-accent" /></g>
+
+                    {/* Nurse's Path */}
+                     <path d="M 600 640 L 600 410" stroke="hsl(var(--chart-3))" strokeWidth="2" fill="none" strokeDasharray="5,5" />
+                     <circle cx="600" cy="400" r="10" fill="hsl(var(--accent))" stroke="white" strokeWidth="2" title="Transmission Event" />
+                     <path d="M 600 390 L 890 390 L 890 530" stroke="hsl(var(--chart-2))" strokeWidth="2.5" fill="none" markerEnd="url(#arrow-nurse-carrier)"/>
+                     <g transform="translate(882, 522)" title="Nurse Contacts Patient C"><User className="w-6 h-6 text-destructive" /></g>
+                  </svg>
               </div>
 
-               <div className="absolute bottom-4 right-4">
-                    <Badge>Animation is for illustrative purposes</Badge>
+               <div className="absolute bottom-4 right-4 max-w-sm">
+                    <Card className="bg-background/80">
+                        <CardContent className="p-3 text-sm">
+                             <p className="font-bold mb-2">Scenario Legend:</p>
+                             <ul className="space-y-1.5 text-muted-foreground">
+                                <li className="flex items-center gap-2"><div className="w-4 h-0.5 bg-primary border-primary border-dashed"/> Doctor's initial path.</li>
+                                <li className="flex items-center gap-2"><div className="w-4 h-0.5 bg-accent"/> Carrier path (post-exposure).</li>
+                                <li className="flex items-center gap-2"><BedDouble className="w-4 h-4 text-destructive"/> Infected Patient.</li>
+                                <li className="flex items-center gap-2"><User className="w-4 h-4 text-accent"/> Point of Doctor's exposure.</li>
+                                <li className="flex items-center gap-2"><circle cx="8" cy="8" r="4" fill="hsl(var(--accent))"/> Doctor-Nurse transmission event.</li>
+                                <li className="flex items-center gap-2"><User className="w-4 h-4 text-destructive"/> Nurse infects Patient C.</li>
+                             </ul>
+                        </CardContent>
+                    </Card>
                 </div>
             </CardContent>
           </Card>
@@ -122,70 +155,8 @@ export default function TrackingPage() {
           </Card>
         </TabsContent>
       </Tabs>
-      <style jsx>{`
-        .actor {
-          position: absolute;
-          transition: all 0.2s ease-in-out;
-        }
-        #doctor {
-          color: hsl(var(--primary));
-          animation: doctor-path 20s linear infinite;
-        }
-        #nurse {
-          color: hsl(var(--chart-3));
-          animation: nurse-path 20s linear infinite;
-        }
-        .patient-c-room .visitor-contact {
-            animation: visitor-contact-glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes doctor-path {
-          0% { top: 50%; left: 5%; opacity: 0; } /* Start off-screen */
-          5% { top: 50%; left: 10%; opacity: 1; } /* Enters */
-          15% { top: 50%; left: 20%; } /* Moves to patient room */
-          20% { top: 25%; left: 20%; } /* Enters room, contacts patient */
-          35% { top: 25%; left: 20%; } /* Stays with patient */
-          40% { top: 50%; left: 20%; } /* Leaves room, becomes carrier */
-          41% { color: hsl(var(--accent)); } /* Changes color to carrier */
-          50% { top: 50%; left: 48%; } /* Moves to center, crosses nurse */
-          100% { top: 50%; left: 48%; }
-        }
-
-        @keyframes nurse-path {
-          0%, 45% { top: 80%; left: 50%; opacity: 0; } /* Starts later, off-screen */
-          50% { top: 50%; left: 50%; opacity: 1; } /* Crosses paths with doctor */
-          51% { color: hsl(var(--accent)); } /* Becomes a carrier */
-          65% { top: 50%; left: 75%; } /* Moves to Ward B */
-          70% { top: 65%; left: 75%; } /* Enters Patient C's room */
-          71% { transform: scale(1.1); } /* Brief interaction glow */
-          72% { transform: scale(1); }
-          85% { top: 65%; left: 75%; } /* Stays in room */
-          90% { top: 50%; left: 75%; } /* Leaves room */
-          100% { top: 50%; left: 95%; opacity: 0; } /* Exits */
-        }
-        
-        #animation-container::after {
-            content: 'Doctor comes in contact with infected patient, then crosses paths with a nurse who becomes a carrier and infects another patient and their visitor.';
-            position: absolute;
-            bottom: 1.5rem;
-            left: 1.5rem;
-            max-width: 250px;
-            padding: 0.5rem;
-            background: hsl(var(--card));
-            border: 1px solid hsl(var(--border));
-            border-radius: var(--radius);
-            font-size: 0.75rem;
-            line-height: 1rem;
-            color: hsl(var(--muted-foreground));
-            animation: show-scenario-text 20s linear infinite;
-        }
-
-        @keyframes show-scenario-text {
-            0%, 5% { opacity: 0; }
-            10%, 90% { opacity: 1; }
-            95%, 100% { opacity: 0; }
-        }
-      `}</style>
     </div>
   );
 }
+
+    
