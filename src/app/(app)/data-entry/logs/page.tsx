@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -21,7 +22,6 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Stethoscope, Pill, Microscope, Check, X, AlertTriangle, Cpu, TestTube2, Database, BarChart } from "lucide-react";
-import { cn } from "@/lib/utils";
 import React from 'react';
 
 const doctorLogs = [
@@ -217,7 +217,7 @@ export default function DataEntryLogsPage() {
                       <TableCell><Badge variant={log.type === 'Prescription' ? 'default' : 'secondary'}>{log.type}</Badge></TableCell>
                       <TableCell>{log.prescribed}</TableCell>
                       <TableCell>{log.sold}</TableCell>
-                      <TableCell className={cn(discrepancy > 0 && 'font-bold text-destructive')}>{discrepancy > 0 ? `+${discrepancy}` : discrepancy}</TableCell>
+                      <TableCell className={discrepancy > 0 ? 'font-bold text-destructive' : ''}>{discrepancy > 0 ? `+${discrepancy}` : discrepancy}</TableCell>
                       <TableCell>
                         {alert ? <Badge variant="destructive" className="flex items-center gap-1.5"><AlertTriangle className="h-3 w-3"/> Alert</Badge> : <Badge variant="outline" className="text-green-600 border-green-600">OK</Badge>}
                       </TableCell>
@@ -399,21 +399,15 @@ function TestCaseContent() {
         "Suspected Pathogen": "Methicillin-resistant Staphylococcus aureus (MRSA)",
         "Symptoms": "Fever (102°F), Cough, Fatigue",
         "Equipment Used": "Foley catheter, Ventilator",
-        "Mobility Status": "Bedridden",
-        "Previous Antibiotic Usage": "Vancomycin for 5 days",
-        "Environmental Sanitation Score": "58/100"
       },
       calculation: {
-        "Patient Vulnerability Score": "8/10 (based on age, comorbidities, mobility)",
-        "Pathogen Virulence Index": "9/10 (for MRSA)",
-        "Environmental Risk Factor": "6/10 (from sanitation score)",
+        "Process": "Data is entered by the clinician. The system calculates a patient vulnerability score (8/10 for this case), considers the MRSA virulence index (9/10), and factors in environmental risk (6/10).",
         "Formula": "R = (((Vp * 0.4) + (Sv * 0.3) + (Er * 0.3)) / 10) * 100",
         "Resulting Calculation": "R = (((9 * 0.4) + (8 * 0.3) + (6 * 0.3)) / 10) * 100 = 74%"
       },
       outputs: {
         "Expected Risk Level": "74%",
         "Expected Alerts": "Real-time alert generated (threshold > 70%)",
-        "Expected Notifications": "Dashboard updated; AMSP and environment teams notified.",
         "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>
       }
     },
@@ -421,23 +415,17 @@ function TestCaseContent() {
       case: "Test Case 2: Antimicrobial Prescription Entry and Sales Monitoring",
       details: {
         "Objective": "Test the prescription entry for antibiotics and tracking of usage.",
-        "Prescription ID": "RX-VAN-5678",
         "Antibiotic": "Vancomycin",
-        "Dosage": "1g twice daily",
-        "Duration": "7 days",
-        "Prescribed by": "Dr. Smith",
         "Prescriptions Documented": "100 doses (last 7 days)",
         "Over-the-counter Sales": "30 doses (last 7 days)"
       },
       calculation: {
-        "Model Used": "Isolation Forest for anomaly detection.",
-        "Anomaly Score (As)": "> 0.7 triggers an alert.",
-        "Discrepancy Formula": "D = (OTC Sales / Prescriptions) * 100",
+        "Process": "Prescription data is matched with pharmacy sales. An Isolation Forest model detects anomalies.",
+        "Formula": "D = (OTC Sales / Prescriptions) * 100",
         "Resulting Calculation": "D = (30 / 100) * 100 = 30%"
       },
       outputs: {
         "Expected Alerts": "Discrepancy alert for 30% (Threshold > 20%)",
-        "Expected Outputs": "Usage trend graph updated.",
         "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>
       }
     },
@@ -445,18 +433,15 @@ function TestCaseContent() {
       case: "Test Case 3: Environmental Sanitation and Airborne Pathogen Monitoring",
       details: {
         "Objective": "Validate environmental data entry and alert generation for poor sanitation.",
-        "Sample ID": "ENV-ICU2-99",
         "Location": "ICU Ward 2",
         "Sanitation Score": "55/100 (Threshold < 70)",
         "Airborne Pathogen Count": "1200 CFU/m³ (Threshold > 1000)",
-        "Cleaning Frequency": "Once daily"
       },
       calculation: {
-        "Process": "Rule-based alert system triggers real-time warnings based on thresholds."
+        "Process": "A rule-based alert system triggers real-time warnings based on thresholds."
       },
       outputs: {
         "Expected Alerts": "Sanitation alert issued for ICU Ward 2; Classified as 'High Risk'.",
-        "Expected Notifications": "Automated email to infection control staff.",
         "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>
       }
     },
@@ -471,7 +456,6 @@ function TestCaseContent() {
         "Process": "Model trained on historical data to predict next 2 months' trends."
       },
       outputs: {
-        "Expected Outputs": "Forecast values for pathogen resistance; Confusion matrix and accuracy metrics.",
         "Model Accuracy": "92%",
         "Example Forecast": "MRSA resistance predicted to increase by 5% next quarter.",
         "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>
@@ -482,18 +466,16 @@ function TestCaseContent() {
       details: {
         "Objective": "Verify cross-ward transmission detection and alert generation.",
         "Patient ID": "P12365",
-        "Initial Isolate (MSSA)": "2025-11-05, Ward B",
-        "Follow-up Isolate (MRSA)": "2025-11-14, Ward D",
-        "Antibiotic Therapy": "Ceftriaxone (Days 5–9)",
-        "Ward Overlap": "2 other MRSA-positive patients in Ward D during same period",
+        "Isolates": "Initial (MSSA) in Ward B, Follow-up (MRSA) in Ward D",
+        "Ward Overlap": "2 other MRSA-positive patients in Ward D.",
       },
       calculation: {
-        "Process": "Chronological ordering of isolates by date/hospital location. Algorithm checks for new MRSA acquisition and possible exposure.",
+        "Process": "Algorithm checks for new MRSA acquisition and possible exposure.",
         "Formula": "Transmission risk score = (Contacts_MRSA × 0.7) + (Antibiotic Exposure_Days × 0.3)",
-        "Resulting Calculation": "(2 × 0.7) + (4 × 0.3) = 1.4 + 1.2 = 2.6",
+        "Resulting Calculation": "(2 × 0.7) + (4 × 0.3) = 2.6",
       },
       outputs: {
-        "Expected Output": "High transmission risk alert generated. Notified infection control team for targeted screening.",
+        "Expected Output": "High transmission risk alert generated. Notified infection control team.",
         "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
       },
     },
@@ -502,16 +484,13 @@ function TestCaseContent() {
       details: {
         "Objective": "Assess risk from device exposure using a Random Forest model.",
         "Patient ID": "P12438",
-        "Pathogen Detected": "Pseudomonas aeruginosa",
-        "Devices": "Central venous catheter, ventilator",
+        "Devices": "Central venous catheter (9 days), ventilator (5 days)",
         "ICU stay": "9 days",
-        "Device exposure": "Catheter (9 days), Ventilator (5 days)",
-        "Environmental Hygiene Score": "67/100",
       },
       calculation: {
-        "Process": "Device exposure time and type factored into risk calculation. Random Forest model used to classify risk.",
+        "Process": "Device exposure time and type factored into risk calculation by a Random Forest model.",
         "Formula": "Device risk score = ((Days with catheter × 0.5) + (Days with ventilator × 0.3)) / ICU days",
-        "Resulting Calculation": "((9 × 0.5) + (5 × 0.3)) / 9 = (4.5 + 1.5) / 9 = 0.67",
+        "Resulting Calculation": "((9 × 0.5) + (5 × 0.3)) / 9 = 0.67",
       },
       outputs: {
         "Expected Output": 'Risk classified as "High." Antibiotic stewardship notification issued for review.',
@@ -522,10 +501,8 @@ function TestCaseContent() {
       case: "Test Case 7: Antibiogram Sensitivity Result Integration",
       details: {
         "Objective": "Integrate lab sensitivity results to guide therapy recommendations.",
-        "Lab Sample ID": "S54827",
         "Pathogen": "Escherichia coli",
-        "Sensitivity Results": "Ciprofloxacin: Resistant, Imipenem: Sensitive, Amoxicillin: Resistant",
-        "Prior Antibiotic Exposure": "Amoxicillin (2 days before culture)",
+        "Sensitivity Results": "Ciprofloxacin: R, Imipenem: S, Amoxicillin: R",
       },
       calculation: {
         "Process": "Lab results parsed; susceptibility pattern mapped. Logistic Regression calculates risk and recommended therapy.",
@@ -542,14 +519,13 @@ function TestCaseContent() {
       details: {
         "Objective": "Detect environmental outbreaks based on sanitation surveys and culture results.",
         "Location": "General Ward F",
-        "Sanitation Survey": "Outbreak threshold breached (CFU/m³ = 1800, norm < 1000)",
-        "Positive surface culture": "Klebsiella pneumoniae",
-        "Recent cleaning schedule": "Last completed 5 days ago",
+        "Survey Data": "CFU/m³ = 1800 (norm < 1000)",
+        "Culture": "Positive for Klebsiella pneumoniae",
       },
       calculation: {
-        "Process": "Environmental sensor readings processed. Outbreak scoring model triggers event if CFU/m³ > threshold and recent positive culture.",
+        "Process": "Outbreak scoring model triggers event if CFU/m³ > threshold and recent positive culture.",
         "Formula": "Outbreak score = (CFU/m³ / norm CFU/m³) × (days since last cleaning / 7)",
-        "Resulting Calculation": "(1800 / 1000) × (5 / 7) = 1.8 × 0.714 = 1.285",
+        "Resulting Calculation": "(1800 / 1000) × (5 / 7) = 1.285",
       },
       outputs: {
         "Expected Output": "Outbreak alert generated. Dashboard marks ward for immediate sanitation.",
@@ -558,57 +534,58 @@ function TestCaseContent() {
     },
   ];
 
+  const renderContent = (content: any) => {
+    if (React.isValidElement(content)) {
+      return content;
+    }
+    if (typeof content === 'object' && content !== null) {
+      return (
+        <ul className="list-disc pl-4 space-y-1">
+          {Object.entries(content).map(([key, value]) => (
+            <li key={key}>
+              <span className="font-semibold">{key}:</span> {renderContent(value)}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return String(content);
+  };
+
+
   return (
-    <div className="space-y-6">
-      {testCases.map((tc, index) => (
-        <Card key={index} className="overflow-hidden">
-          <CardHeader>
-            <CardTitle>{tc.case}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 text-sm">
-            <Table className="table-fixed">
-              <caption className="mt-2 text-sm text-muted-foreground text-left">Details & Inputs</caption>
-              <TableBody>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[20%]">Test Case</TableHead>
+            <TableHead className="w-[25%]">Details & Inputs</TableHead>
+            <TableHead className="w-[30%]">Process & Calculation</TableHead>
+            <TableHead className="w-[25%]">Outputs & Results</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {testCases.map((tc, index) => (
+            <TableRow key={index}>
+              <TableCell className="font-medium align-top">{tc.case}</TableCell>
+              <TableCell className="align-top text-xs">
                 {Object.entries(tc.details).map(([key, value]) => (
-                  <TableRow key={key}>
-                    <TableCell className="w-1/3 font-medium text-foreground">{key}</TableCell>
-                    <TableCell className="w-2/3 text-muted-foreground">
-                      {React.isValidElement(value) ? value : <p>{value as string}</p>}
-                    </TableCell>
-                  </TableRow>
+                  <p key={key}><span className="font-semibold">{key}:</span> {String(value)}</p>
                 ))}
-              </TableBody>
-            </Table>
-            <Table className="table-fixed">
-              <caption className="mt-2 text-sm text-muted-foreground text-left">Process & Calculation</caption>
-              <TableBody>
-                {Object.entries(tc.calculation).map(([key, value]) => (
-                  <TableRow key={key}>
-                    <TableCell className="w-1/3 font-medium text-foreground">{key}</TableCell>
-                    <TableCell className="w-2/3 text-muted-foreground">
-                      {React.isValidElement(value) ? value : <p className="font-mono text-xs bg-muted p-1 rounded-md inline-block">{value as string}</p>}
-                    </TableCell>
-                  </TableRow>
+              </TableCell>
+               <TableCell className="align-top text-xs">
+                 {Object.entries(tc.calculation).map(([key, value]) => (
+                  <p key={key} className="mb-1"><span className="font-semibold">{key}:</span> <span className="font-mono text-muted-foreground">{String(value)}</span></p>
                 ))}
-              </TableBody>
-            </Table>
-            <Table className="table-fixed">
-              <caption className="mt-2 text-sm text-muted-foreground text-left">Outputs & Results</caption>
-              <TableBody>
-                {Object.entries(tc.outputs).map(([key, value]) => (
-                  <TableRow key={key}>
-                    <TableCell className="w-1/3 font-medium text-foreground">{key}</TableCell>
-                    <TableCell className="w-2/3 text-muted-foreground">
-                      {React.isValidElement(value) ? value : <p>{value as string}</p>}
-                    </TableCell>
-                  </TableRow>
+              </TableCell>
+              <TableCell className="align-top text-xs">
+                 {Object.entries(tc.outputs).map(([key, value]) => (
+                  <p key={key} className="mb-1"><span className="font-semibold">{key}:</span> {renderContent(value)}</p>
                 ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
   );
 }
 
