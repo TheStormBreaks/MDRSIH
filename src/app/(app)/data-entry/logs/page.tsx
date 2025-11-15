@@ -30,6 +30,8 @@ const doctorLogs = [
     { id: 3, patientId: "P789", date: "2023-10-25", action: "Prescription", details: "Vancomycin 1g", risk: 92 },
     { id: 4, patientId: "P312", date: "2023-10-24", action: "Declaration", details: "Cleared of infection", risk: 10 },
     { id: 5, patientId: "P00123", date: "2023-10-24", action: "New Case", details: "Fever, cough", risk: 45 },
+    { id: 6, patientId: "P519", date: "2023-10-23", action: "New Case", details: "Post-surgery infection, C. diff", risk: 88},
+    { id: 7, patientId: "S102", date: "2023-10-22", action: "Exposure Log", details: "Contact with P482", risk: 60},
 
 ];
 
@@ -78,20 +80,20 @@ const patientData = [
     morbidities: "N/A",
     risk: 60,
   },
-  {
-    id: "P604",
-    ward: "Ward C",
-    bed: "07A",
-    status: "Exposed",
-    morbidities: "Hypertension",
-    risk: 45,
-  },
     {
     id: "P00123",
     ward: "Ward C",
     bed: "15B",
     status: "Active MDR",
     morbidities: "Fever, cough",
+    risk: 45,
+  },
+  {
+    id: "P604",
+    ward: "Ward C",
+    bed: "07A",
+    status: "Exposed",
+    morbidities: "Hypertension",
     risk: 45,
   },
   {
