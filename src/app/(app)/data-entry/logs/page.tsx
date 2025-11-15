@@ -474,7 +474,86 @@ function TestCaseContent() {
         "Example Forecast": "MRSA resistance predicted to increase by 5% next quarter.",
         "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>
       }
-    }
+    },
+     {
+      case: "Test Case 5: Cross-ward Transmission Alert",
+      details: {
+        "Objective": "Verify cross-ward transmission detection and alert generation.",
+        "Patient ID": "P12365",
+        "Initial Isolate (MSSA)": "2025-11-05, Ward B",
+        "Follow-up Isolate (MRSA)": "2025-11-14, Ward D",
+        "Antibiotic Therapy": "Ceftriaxone (Days 5–9)",
+        "Ward Overlap": "2 other MRSA-positive patients in Ward D during same period",
+      },
+      calculation: {
+        "Process": "Chronological ordering of isolates by date/hospital location. Algorithm checks for new MRSA acquisition and possible exposure.",
+        "Formula": "Transmission risk score = (Contacts_MRSA × 0.7) + (Antibiotic Exposure_Days × 0.3)",
+        "Resulting Calculation": "(2 × 0.7) + (4 × 0.3) = 1.4 + 1.2 = 2.6",
+      },
+      outputs: {
+        "Expected Output": "High transmission risk alert generated. Notified infection control team for targeted screening.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 6: Device-induced Pathogen Risk",
+      details: {
+        "Objective": "Assess risk from device exposure using a Random Forest model.",
+        "Patient ID": "P12438",
+        "Pathogen Detected": "Pseudomonas aeruginosa",
+        "Devices": "Central venous catheter, ventilator",
+        "ICU stay": "9 days",
+        "Device exposure": "Catheter (9 days), Ventilator (5 days)",
+        "Environmental Hygiene Score": "67/100",
+      },
+      calculation: {
+        "Process": "Device exposure time and type factored into risk calculation. Random Forest model used to classify risk.",
+        "Formula": "Device risk score = ((Days with catheter × 0.5) + (Days with ventilator × 0.3)) / ICU days",
+        "Resulting Calculation": "((9 × 0.5) + (5 × 0.3)) / 9 = (4.5 + 1.5) / 9 = 0.67",
+      },
+      outputs: {
+        "Expected Output": 'Risk classified as "High." Antibiotic stewardship notification issued for review.',
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 7: Antibiogram Sensitivity Result Integration",
+      details: {
+        "Objective": "Integrate lab sensitivity results to guide therapy recommendations.",
+        "Lab Sample ID": "S54827",
+        "Pathogen": "Escherichia coli",
+        "Sensitivity Results": "Ciprofloxacin: Resistant, Imipenem: Sensitive, Amoxicillin: Resistant",
+        "Prior Antibiotic Exposure": "Amoxicillin (2 days before culture)",
+      },
+      calculation: {
+        "Process": "Lab results parsed; susceptibility pattern mapped. Logistic Regression calculates risk and recommended therapy.",
+        "Formula": "Therapy effectiveness score = (Number of Sensitive Antibiotics / Total Tested) × 100",
+        "Resulting Calculation": "(1 / 3) × 100 = 33.3%",
+      },
+      outputs: {
+        "Expected Output": "System flags imipenem as preferred therapy, alerts on amoxicillin resistance.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 8: Environmental Outbreak Detection",
+      details: {
+        "Objective": "Detect environmental outbreaks based on sanitation surveys and culture results.",
+        "Location": "General Ward F",
+        "Sanitation Survey": "Outbreak threshold breached (CFU/m³ = 1800, norm < 1000)",
+        "Positive surface culture": "Klebsiella pneumoniae",
+        "Recent cleaning schedule": "Last completed 5 days ago",
+      },
+      calculation: {
+        "Process": "Environmental sensor readings processed. Outbreak scoring model triggers event if CFU/m³ > threshold and recent positive culture.",
+        "Formula": "Outbreak score = (CFU/m³ / norm CFU/m³) × (days since last cleaning / 7)",
+        "Resulting Calculation": "(1800 / 1000) × (5 / 7) = 1.8 × 0.714 = 1.285",
+      },
+      outputs: {
+        "Expected Output": "Outbreak alert generated. Dashboard marks ward for immediate sanitation.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
   ];
 
   return (
@@ -486,6 +565,7 @@ function TestCaseContent() {
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
             <Table className="table-fixed">
+              <caption className="mt-2 text-sm text-muted-foreground text-left">Details & Inputs</caption>
               <TableBody>
                 {Object.entries(tc.details).map(([key, value]) => (
                   <TableRow key={key}>
@@ -498,18 +578,20 @@ function TestCaseContent() {
               </TableBody>
             </Table>
             <Table className="table-fixed">
+              <caption className="mt-2 text-sm text-muted-foreground text-left">Process & Calculation</caption>
               <TableBody>
                 {Object.entries(tc.calculation).map(([key, value]) => (
                   <TableRow key={key}>
                     <TableCell className="w-1/3 font-medium text-foreground">{key}</TableCell>
                     <TableCell className="w-2/3 text-muted-foreground">
-                      {React.isValidElement(value) ? value : <p>{value as string}</p>}
+                      {React.isValidElement(value) ? value : <p className="font-mono text-xs bg-muted p-1 rounded-md inline-block">{value as string}</p>}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
             <Table className="table-fixed">
+              <caption className="mt-2 text-sm text-muted-foreground text-left">Outputs & Results</caption>
               <TableBody>
                 {Object.entries(tc.outputs).map(([key, value]) => (
                   <TableRow key={key}>
