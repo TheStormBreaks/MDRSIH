@@ -42,11 +42,18 @@ const trackedPersonnel = [
   { id: "P12345", location: "ICU (TC1)" },
   { id: "P12365", location: "Ward D (TC5)" },
   { id: "P12438", location: "ICU (TC6)" },
-  { id: "S54827", location: "Lab Sample (TC7)"},
+  { id: "S54827", location: "Lab Sample (TC7)" },
   { id: "P10101", location: "ICU (TC9)" },
-  { id: "P10102", location: "Ward C (TC10)"},
-  { id: "P10105", location: "Surgical (TC13)"},
-  { id: "P10107", location: "ER (TC15)"},
+  { id: "P10102", location: "Ward C (TC10)" },
+  { id: "P10105", location: "Surgical (TC13)" },
+  { id: "P10107", location: "ER (TC15)" },
+  { id: "P10110", location: "Ward A (TC18)" },
+  { id: "P10111", location: "Room 217 (TC19)" },
+  { id: "P10113", location: "Ward X (TC21)" },
+  { id: "P10114", location: "Ward Y (TC22)" },
+  { id: "P10115", location: "Ward Z (TC23)" },
+  { id: "P10120", location: "Isolation (TC28)" },
+  { id: "P10122", location: "ER (TC30)" },
 ];
 
 
@@ -128,7 +135,7 @@ export default function HardwarePage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {trackedPersonnel.map((person, index) => (
           <LiveFeedCard 
             key={person.id}
