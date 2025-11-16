@@ -38,6 +38,15 @@ const mockStatuses: WristbandStatus[] = [
   }
 ];
 
+const trackedPersonnel = [
+  { id: "P789", location: "ICU" },
+  { id: "P482", location: "Ward B" },
+  { id: "S102", location: "ICU (Staff)"},
+  { id: "P519", location: "Surgical"},
+  { id: "P312", location: "Ward A (Cleared)"},
+];
+
+
 const StatusDisplay = ({ status }: { status: WristbandStatus }) => {
   const getStatusColor = (s: 'NORMAL' | 'HIGH RISK' | 'ALERT' | 'ELEVATED') => {
     switch (s) {
@@ -81,18 +90,31 @@ const StatusDisplay = ({ status }: { status: WristbandStatus }) => {
   );
 };
 
-
-export default function HardwarePage() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const LiveFeedCard = ({ personnelId, location, initialIndex }: { personnelId: string, location: string, initialIndex: number }) => {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % mockStatuses.length);
-    }, 3000); // Change status every 3 seconds
+    }, 3000 + Math.random() * 1000); // Stagger updates
 
     return () => clearInterval(interval);
   }, []);
 
+  return (
+     <Card>
+        <CardHeader>
+          <CardTitle>Live Wristband Feed ({personnelId} - {location})</CardTitle>
+          <CardDescription>Displaying real-time sensor data from a monitored individual's biosafety wristband.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <StatusDisplay status={mockStatuses[currentIndex]} />
+        </CardContent>
+      </Card>
+  )
+}
+
+export default function HardwarePage() {
   return (
     <div className="container mx-auto p-4 md:p-6 lg:p-8">
       <div className="mb-8">
@@ -100,19 +122,20 @@ export default function HardwarePage() {
           <HardDrive className="w-8 h-8" /> Hardware Logs
         </h1>
         <p className="text-muted-foreground">
-          Live feed from on-premise biosafety monitoring hardware.
+          Live feed from on-premise biosafety monitoring hardware for all tracked personnel.
         </p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Live Wristband Feed (Patient P789 - ICU)</CardTitle>
-          <CardDescription>Displaying real-time sensor data from a high-risk patient's biosafety wristband.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <StatusDisplay status={mockStatuses[currentIndex]} />
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {trackedPersonnel.map((person, index) => (
+          <LiveFeedCard 
+            key={person.id}
+            personnelId={person.id}
+            location={person.location}
+            initialIndex={index % mockStatuses.length}
+          />
+        ))}
+      </div>
     </div>
   );
 }
