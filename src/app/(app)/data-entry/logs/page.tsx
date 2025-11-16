@@ -1,4 +1,5 @@
 
+
 import {
   Card,
   CardContent,
@@ -23,6 +24,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Stethoscope, Pill, Microscope, Check, X, AlertTriangle, Cpu, TestTube2, Database, BarChart } from "lucide-react";
 import React from 'react';
+import { cn } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 const doctorLogs = [
     { id: 1, patientId: "P789", date: "2023-10-26", action: "New Case", details: "Suspected MRSA, fever", risk: 95 },
@@ -217,7 +221,7 @@ export default function DataEntryLogsPage() {
                       <TableCell><Badge variant={log.type === 'Prescription' ? 'default' : 'secondary'}>{log.type}</Badge></TableCell>
                       <TableCell>{log.prescribed}</TableCell>
                       <TableCell>{log.sold}</TableCell>
-                      <TableCell className={discrepancy > 0 ? 'font-bold text-destructive' : ''}>{discrepancy > 0 ? `+${discrepancy}` : discrepancy}</TableCell>
+                      <TableCell className={cn(discrepancy > 0 && 'font-bold text-destructive')}>{discrepancy > 0 ? `+${discrepancy}` : discrepancy}</TableCell>
                       <TableCell>
                         {alert ? <Badge variant="destructive" className="flex items-center gap-1.5"><AlertTriangle className="h-3 w-3"/> Alert</Badge> : <Badge variant="outline" className="text-green-600 border-green-600">OK</Badge>}
                       </TableCell>
@@ -554,38 +558,40 @@ function TestCaseContent() {
 
 
   return (
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[20%]">Test Case</TableHead>
-            <TableHead className="w-[25%]">Details & Inputs</TableHead>
-            <TableHead className="w-[30%]">Process & Calculation</TableHead>
-            <TableHead className="w-[25%]">Outputs & Results</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {testCases.map((tc, index) => (
-            <TableRow key={index}>
-              <TableCell className="font-medium align-top">{tc.case}</TableCell>
-              <TableCell className="align-top text-xs">
-                {Object.entries(tc.details).map(([key, value]) => (
-                  <p key={key}><span className="font-semibold">{key}:</span> {String(value)}</p>
-                ))}
-              </TableCell>
-               <TableCell className="align-top text-xs">
-                 {Object.entries(tc.calculation).map(([key, value]) => (
-                  <p key={key} className="mb-1"><span className="font-semibold">{key}:</span> <span className="font-mono text-muted-foreground">{String(value)}</span></p>
-                ))}
-              </TableCell>
-              <TableCell className="align-top text-xs">
-                 {Object.entries(tc.outputs).map(([key, value]) => (
-                  <p key={key} className="mb-1"><span className="font-semibold">{key}:</span> {renderContent(value)}</p>
-                ))}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Tabs defaultValue="case-0" className="w-full">
+        <TabsList className="grid w-full grid-cols-4 md:grid-cols-8">
+            {testCases.map((tc, index) => (
+                <TabsTrigger key={`trigger-${index}`} value={`case-${index}`}>Case {index + 1}</TabsTrigger>
+            ))}
+        </TabsList>
+        {testCases.map((tc, index) => (
+            <TabsContent key={`content-${index}`} value={`case-${index}`}>
+                 <Card className="overflow-hidden">
+                    <CardHeader>
+                        <CardTitle>{tc.case}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <Table>
+                            <TableBody>
+                                <TableRow>
+                                    <TableHead className="w-1/4 font-semibold">Details & Inputs</TableHead>
+                                    <TableCell className="text-xs">{renderContent(tc.details)}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableHead className="w-1/4 font-semibold">Process & Calculation</TableHead>
+                                    <TableCell className="text-xs">{renderContent(tc.calculation)}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableHead className="w-1/4 font-semibold">Outputs & Results</TableHead>
+                                    <TableCell className="text-xs">{renderContent(tc.outputs)}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+            </TabsContent>
+        ))}
+    </Tabs>
   );
 }
 
