@@ -36,6 +36,13 @@ const doctorLogs = [
     { id: 5, patientId: "P00123", date: "2023-10-24", action: "New Case", details: "Fever, cough", risk: 45 },
     { id: 6, patientId: "P519", date: "2023-10-23", action: "New Case", details: "Post-surgery infection, C. diff", risk: 88},
     { id: 7, patientId: "S102", date: "2023-10-22", action: "Exposure Log", details: "Contact with P482", risk: 60},
+    { id: 8, patientId: "P12365", date: "2025-11-14", action: "Follow-up", details: "New MRSA acquisition in Ward D", risk: 85},
+    { id: 9, patientId: "P12438", date: "2025-11-15", action: "New Case", details: "Pseudomonas aeruginosa, on ventilator", risk: 90},
+    { id: 10, patientId: "P10101", date: "2025-11-16", action: "New Case", details: "Acinetobacter baumannii, VAP", risk: 80},
+    { id: 11, patientId: "P10102", date: "2025-11-17", action: "Follow-up", details: "E. coli, CAUTI risk", risk: 70},
+    { id: 12, patientId: "P10105", date: "2025-11-18", action: "New Case", details: "Klebsiella pneumoniae, SSI risk", risk: 77},
+    { id: 13, patientId: "P10110", date: "2025-11-19", action: "Prescription", details: "Piperacillin-tazobactam (10 days)", risk: 50},
+    { id: 14, patientId: "P10111", date: "2025-11-20", action: "Exposure Log", details: "Exposed to E. faecium", risk: 65},
 
 ];
 
@@ -43,71 +50,34 @@ const pharmaLogs = [
     { id: 1, type: "Prescription", medicine: "Vancomycin", prescribed: 150, sold: 200, prescriptionId: "RX12345" },
     { id: 2, type: "OTC", medicine: "Ibuprofen", prescribed: 0, sold: 1, prescriptionId: "N/A" },
     { id: 3, type: "Prescription", medicine: "Ciprofloxacin", prescribed: 28, sold: 28, prescriptionId: "RX12346" },
+    { id: 4, type: "Prescription", medicine: "Amoxicillin", prescribed: 120, sold: 150, prescriptionId: "RX12347"},
+
 ];
 
 const evstLogs = [
     { id: 1, type: "Surface", location: "ICU - Bed 12A", sampleId: "SURF-ICU-001", result: "Critical" },
     { id: 2, type: "Air", location: "OR 3", sampleId: "AIR-OR-003", result: "Clear" },
     { id: 3, type: "Water", location: "Ward B Sink", sampleId: "WAT-WB-001", result: "Pending" },
+    { id: 4, type: "Air", location: "General Ward F", sampleId: "AIR-GWF-001", result: "Critical"},
+    { id: 5, type: "Water", location: "ICU water sample", sampleId: "WAT-ICU-005", result: "Critical"},
 ];
 
 const patientData = [
-  {
-    id: "P789",
-    ward: "ICU",
-    bed: "12A",
-    status: "Active MDR",
-    morbidities: "Diabetes, CKD",
-    risk: 95,
-  },
-  {
-    id: "P519",
-    ward: "Surgical",
-    bed: "Post-Op 2",
-    status: "Active MDR",
-    morbidities: "Post-surgery",
-    risk: 88,
-  },
-  {
-    id: "P482",
-    ward: "Ward B",
-    bed: "03B",
-    status: "Active MDR",
-    morbidities: "COPD",
-    risk: 75,
-  },
-  {
-    id: "S102",
-    ward: "ICU",
-    bed: "N/A (Staff)",
-    status: "Exposed",
-    morbidities: "N/A",
-    risk: 60,
-  },
-    {
-    id: "P00123",
-    ward: "Ward C",
-    bed: "15B",
-    status: "Active MDR",
-    morbidities: "Fever, cough",
-    risk: 45,
-  },
-  {
-    id: "P604",
-    ward: "Ward C",
-    bed: "07A",
-    status: "Exposed",
-    morbidities: "Hypertension",
-    risk: 45,
-  },
-  {
-    id: "P312",
-    ward: "Ward A",
-    bed: "01A",
-    status: "Cleared",
-    morbidities: "N/A",
-    risk: 10,
-  },
+  { id: "P789", ward: "ICU", bed: "12A", status: "Active MDR", morbidities: "Diabetes, CKD", risk: 95, },
+  { id: "P12438", ward: "ICU", bed: "09C", status: "Active MDR", morbidities: "P. aeruginosa, Ventilator", risk: 90 },
+  { id: "P519", ward: "Surgical", bed: "Post-Op 2", status: "Active MDR", morbidities: "Post-surgery, C.diff", risk: 88, },
+  { id: "P12365", ward: "Ward D", bed: "04A", status: "Active MDR", morbidities: "MRSA, Ceftriaxone", risk: 85 },
+  { id: "P10101", ward: "ICU", bed: "05B", status: "Active MDR", morbidities: "A. baumannii, VAP", risk: 80 },
+  { id: "P10105", ward: "Surgical", bed: "Post-Op 5", status: "Active MDR", morbidities: "K. pneumoniae, SSI", risk: 77 },
+  { id: "P482", ward: "Ward B", bed: "03B", status: "Active MDR", morbidities: "COPD", risk: 75, },
+  { id: "P10102", ward: "Ward C", bed: "11A", status: "Active MDR", morbidities: "E. coli, Foley catheter", risk: 70 },
+  { id: "P10111", ward: "Room 217", bed: "217B", status: "Exposed", morbidities: "Roommate has E. faecium", risk: 65 },
+  { id: "S102", ward: "ICU", bed: "N/A (Staff)", status: "Exposed", morbidities: "N/A", risk: 60, },
+  { id: "P10110", ward: "Ward A", bed: "02C", status: "Stable", morbidities: "History of infection", risk: 50 },
+  { id: "P00123", ward: "Ward C", bed: "15B", status: "Active MDR", morbidities: "Fever, cough", risk: 45, },
+  { id: "P604", ward: "Ward C", bed: "07A", status: "Exposed", morbidities: "Hypertension", risk: 45, },
+  { id: "P312", ward: "Ward A", bed: "01A", status: "Cleared", morbidities: "N/A", risk: 10, },
+  { id: "P10107", ward: "ER", bed: "N/A", status: "Community-Acquired", morbidities: "Pneumonia", risk: 35 },
 ];
 
 const summaryData = [
@@ -140,6 +110,10 @@ export default function DataEntryLogsPage() {
             {status}
           </Badge>
         );
+      case "Community-Acquired":
+         return <Badge variant="secondary">{status}</Badge>;
+      case "Stable":
+          return <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">{status}</Badge>;
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
@@ -221,7 +195,7 @@ export default function DataEntryLogsPage() {
                       <TableCell><Badge variant={log.type === 'Prescription' ? 'default' : 'secondary'}>{log.type}</Badge></TableCell>
                       <TableCell>{log.prescribed}</TableCell>
                       <TableCell>{log.sold}</TableCell>
-                      <TableCell className={cn(discrepancy > 0, 'font-bold text-destructive')}>{discrepancy > 0 ? `+${discrepancy}` : discrepancy}</TableCell>
+                      <TableCell className={cn(discrepancy > 0 && 'font-bold text-destructive')}>{discrepancy > 0 ? `+${discrepancy}` : discrepancy}</TableCell>
                       <TableCell>
                         {alert ? <Badge variant="destructive" className="flex items-center gap-1.5"><AlertTriangle className="h-3 w-3"/> Alert</Badge> : <Badge variant="outline" className="text-green-600 border-green-600">OK</Badge>}
                       </TableCell>
@@ -968,7 +942,7 @@ function TestCaseContent() {
 
   return (
       <Tabs defaultValue="case-0" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-11">
+        <TabsList className="flex flex-wrap h-auto justify-start">
             {testCases.map((_, index) => (
                 <TabsTrigger key={`trigger-${index}`} value={`case-${index}`}>Case {index + 1}</TabsTrigger>
             ))}
@@ -1166,5 +1140,7 @@ function MetricsJustificationContent() {
     </div>
   )
 }
+
+    
 
     
