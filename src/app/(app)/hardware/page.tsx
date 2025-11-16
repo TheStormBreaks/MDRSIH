@@ -42,11 +42,11 @@ const trackedPersonnel = [
   { id: "P12345", location: "ICU (TC1)" },
   { id: "P12365", location: "Ward D (TC5)" },
   { id: "P12438", location: "ICU (TC6)" },
-  { id: "P789", location: "ICU" },
-  { id: "P482", location: "Ward B" },
-  { id: "S102", location: "ICU (Staff)"},
-  { id: "P519", location: "Surgical"},
-  { id: "P312", location: "Ward A (Cleared)"},
+  { id: "S54827", location: "Lab Sample (TC7)"},
+  { id: "P10101", location: "ICU (TC9)" },
+  { id: "P10102", location: "Ward C (TC10)"},
+  { id: "P10105", location: "Surgical (TC13)"},
+  { id: "P10107", location: "ER (TC15)"},
 ];
 
 
