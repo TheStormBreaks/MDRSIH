@@ -472,14 +472,15 @@ function TestCaseContent() {
         "Patient ID": "P12365",
         "Isolates": "Initial (MSSA) in Ward B, Follow-up (MRSA) in Ward D",
         "Ward Overlap": "2 other MRSA-positive patients in Ward D.",
+        "Antibiotic Therapy": "Ceftriaxone (Days 5-9)",
       },
       calculation: {
-        "Process": "Algorithm checks for new MRSA acquisition and possible exposure.",
+        "Process": "Chronological ordering of isolates by date/hospital location. Algorithm checks for new MRSA acquisition within a single hospitalization, and possible exposure to other MRSA patients.",
         "Formula": "Transmission risk score = (Contacts_MRSA × 0.7) + (Antibiotic Exposure_Days × 0.3)",
-        "Resulting Calculation": "(2 × 0.7) + (4 × 0.3) = 2.6",
+        "Resulting Calculation": "(2 × 0.7) + (4 × 0.3) = 1.4 + 1.2 = 2.6",
       },
       outputs: {
-        "Expected Output": "High transmission risk alert generated. Notified infection control team.",
+        "Expected Output": "High transmission risk alert generated. Notified infection control team for targeted screening.",
         "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
       },
     },
@@ -488,13 +489,15 @@ function TestCaseContent() {
       details: {
         "Objective": "Assess risk from device exposure using a Random Forest model.",
         "Patient ID": "P12438",
-        "Devices": "Central venous catheter (9 days), ventilator (5 days)",
+        "Pathogen Detected": "Pseudomonas aeruginosa",
+        "Devices": "Central venous catheter, ventilator",
         "ICU stay": "9 days",
+        "Device exposure": "Catheter (9 days), Ventilator (5 days)",
       },
       calculation: {
         "Process": "Device exposure time and type factored into risk calculation by a Random Forest model.",
         "Formula": "Device risk score = ((Days with catheter × 0.5) + (Days with ventilator × 0.3)) / ICU days",
-        "Resulting Calculation": "((9 × 0.5) + (5 × 0.3)) / 9 = 0.67",
+        "Resulting Calculation": "((9 × 0.5) + (5 × 0.3)) / 9 = 6 / 9 = 0.67",
       },
       outputs: {
         "Expected Output": 'Risk classified as "High." Antibiotic stewardship notification issued for review.',
@@ -505,8 +508,10 @@ function TestCaseContent() {
       case: "Test Case 7: Antibiogram Sensitivity Result Integration",
       details: {
         "Objective": "Integrate lab sensitivity results to guide therapy recommendations.",
+        "Lab Sample ID": "S54827",
         "Pathogen": "Escherichia coli",
         "Sensitivity Results": "Ciprofloxacin: R, Imipenem: S, Amoxicillin: R",
+        "Prior Antibiotic Exposure": "Amoxicillin (2 days before culture)",
       },
       calculation: {
         "Process": "Lab results parsed; susceptibility pattern mapped. Logistic Regression calculates risk and recommended therapy.",
@@ -523,16 +528,420 @@ function TestCaseContent() {
       details: {
         "Objective": "Detect environmental outbreaks based on sanitation surveys and culture results.",
         "Location": "General Ward F",
-        "Survey Data": "CFU/m³ = 1800 (norm < 1000)",
-        "Culture": "Positive for Klebsiella pneumoniae",
+        "Sanitation Survey": "Outbreak threshold breached (CFU/m³ = 1800, norm <1000)",
+        "Positive surface culture": "Klebsiella pneumoniae",
+        "Recent cleaning schedule": "Last completed 5 days ago",
       },
       calculation: {
-        "Process": "Outbreak scoring model triggers event if CFU/m³ > threshold and recent positive culture.",
+        "Process": "Environmental sensor readings processed. Outbreak scoring model triggers event if CFU/m³ > threshold and recent positive culture.",
         "Formula": "Outbreak score = (CFU/m³ / norm CFU/m³) × (days since last cleaning / 7)",
         "Resulting Calculation": "(1800 / 1000) × (5 / 7) = 1.285",
       },
       outputs: {
         "Expected Output": "Outbreak alert generated. Dashboard marks ward for immediate sanitation.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 9: Ventilator-Associated Pneumonia",
+      details: {
+        "Objective": "Assess risk for Ventilator-Associated Pneumonia (VAP).",
+        "Patient ID": "P10101",
+        "Pathogen": "Acinetobacter baumannii",
+        "Devices": "Ventilator (7 days)",
+        "Recent antibiotics": "Meropenem (5 days)",
+      },
+      calculation: {
+        "Process": "The system calculates an infection risk score based on ventilator days and symptom severity.",
+        "Formula": "Infection risk = ((Ventilator days × 0.5) + (Symptoms severity × 0.5)) / 10 (Severity: 9/10)",
+        "Resulting Calculation": "((7 × 0.5) + (9 × 0.5)) / 10 = (3.5 + 4.5) / 10 = 0.8",
+      },
+      outputs: {
+        "Expected Output": 'Risk classified "High"; infection control intervention advised.',
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 10: Catheter-Associated UTI",
+      details: {
+        "Objective": "Identify risk of Catheter-Associated Urinary Tract Infection (CAUTI).",
+        "Patient ID": "P10102",
+        "Pathogen": "E. coli",
+        "Device": "Foley catheter (10 days)",
+        "Sanitation score": "55/100",
+      },
+      calculation: {
+        "Process": "Risk is calculated based on device duration and sanitation status.",
+        "Formula": "UTI risk = (Device days / 10) + (1 if sanitation < 60)",
+        "Resulting Calculation": "1 + 1 = 2",
+      },
+      outputs: {
+        "Expected Output": "Flagged for urgent device removal and deep cleaning.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 11: Pharmacy Compliance Audit",
+      details: {
+        "Objective": "Audit pharmacy dispensing against prescriptions.",
+        "Drug": "Amoxicillin",
+        "Prescribed": "120 doses",
+        "Dispensed": "150 doses",
+      },
+      calculation: {
+        "Process": "Calculate discrepancy between prescribed and dispensed amounts.",
+        "Formula": "Discrepancy (%) = ((Dispensed - Prescribed) / Prescribed) × 100",
+        "Resulting Calculation": "((150 - 120) / 120) * 100 = 25%",
+      },
+      outputs: {
+        "Expected Output": "Alert generated; compliance team notified.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 12: ICU MRSA Outbreak",
+      details: {
+        "Objective": "Detect potential outbreaks in the ICU.",
+        "Location": "ICU-3",
+        "MRSA-positive cases": "4 in 1 week",
+        "Bed overlap": "80% patients shared nurse",
+      },
+      calculation: {
+        "Process": "An outbreak score is calculated based on case frequency and staff overlap.",
+        "Formula": "Outbreak score = (cases/week) × (bed overlap %)",
+        "Resulting Calculation": "4 × 0.8 = 3.2",
+      },
+      outputs: {
+        "Expected Output": "Outbreak alert sent; cohorting and nurse assignments adjusted.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 13: Post-Surgical SSI",
+      details: {
+        "Objective": "Assess risk for Surgical Site Infection (SSI).",
+        "Patient ID": "P10105",
+        "Procedure": "Colon resection",
+        "Pathogen": "Klebsiella pneumoniae",
+        "Antibiotic prophylaxis": "Yes",
+      },
+      calculation: {
+        "Process": "SSI risk is calculated based on procedure complexity and pathogen resistance.",
+        "Formula": "SSI risk = ((Procedure risk × 0.7) + (pathogen MDR × 0.3)) / Max score (Procedure: 8/10, MDR: 7/10)",
+        "Resulting Calculation": "((8 * 0.7) + (7 * 0.3)) / 10 = (5.6 + 2.1) / 10 = 77%",
+      },
+      outputs: {
+        "Expected Output": "Advice for extended surveillance and strict wound care.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 14: Lab Result Integration Error",
+      details: {
+        "Objective": "Detect errors in lab result integration.",
+        "Sample": "S51002",
+        "Pathogen": "S. aureus",
+        "Details": "Three antibiotics tested; system failed to match one result.",
+      },
+      calculation: {
+        "Process": "System verifies the matching rate of lab results from LIS.",
+        "Formula": "Matching rate = (Matched / Total results) × 100",
+        "Resulting Calculation": "(2 / 3) × 100 = 66.7%",
+      },
+      outputs: {
+        "Expected Output": "Error flagged for LIS team.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 15: Community-Acquired Infection",
+      details: {
+        "Objective": "Differentiate community-acquired vs. hospital-acquired infections.",
+        "Patient ID": "P10107",
+        "Admission with pneumonia, pathogen": "Streptococcus pneumoniae",
+        "Recent hospitalization": "None",
+      },
+      calculation: {
+        "Process": "A simple rule checks for recent hospital admissions.",
+        "Formula": "Community-acquired score = 1 if no admission in 30 days",
+        "Resulting Calculation": "Score = 1",
+      },
+      outputs: {
+        "Expected Output": "Case not flagged for hospital-acquired surveillance.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 16: Rapid Resistance Shift Detection",
+      details: {
+        "Objective": "Detect rapid shifts in antibiotic resistance.",
+        "E. coli urine isolates": "Week 1: 12/15 resistant to ciprofloxacin, Week 2: 18/20 resistant",
+      },
+      calculation: {
+        "Process": "The system compares resistance rates week-over-week.",
+        "Formula": "Resistance change = (Week2Res/Week2Tot) - (Week1Res/Week1Tot)",
+        "Resulting Calculation": "(18/20) - (12/15) = 0.9 - 0.8 = 0.1",
+      },
+      outputs: {
+        "Expected Output": "10% increase detected; dashboard trend updated.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 17: Nursing Staff Hygiene Audit",
+      details: {
+        "Objective": "Audit hand hygiene compliance for nursing staff.",
+        "Location": "Ward-5",
+        "Nurse hand hygiene compliance": "70%",
+        "Standard": "95%",
+      },
+      calculation: {
+        "Process": "Calculate the gap between actual and standard compliance.",
+        "Formula": "Compliance gap = Standard - Actual",
+        "Resulting Calculation": "95% - 70% = 25%",
+      },
+      outputs: {
+        "Expected Output": "Retraining scheduled for ward nurses.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 18: Antimicrobial Therapy Duration Monitoring",
+      details: {
+        "Objective": "Monitor and flag antimicrobial therapy overuse.",
+        "Patient ID": "P10110",
+        "Drug": "Piperacillin-tazobactam",
+        "Planned duration": "7 days",
+        "Given": "10 days",
+      },
+      calculation: {
+        "Process": "Compare the actual duration of therapy against the planned duration.",
+        "Formula": "Overuse = Given – Planned",
+        "Resulting Calculation": "10 - 7 = 3 days",
+      },
+      outputs: {
+        "Expected Output": "Pharmacy prompts physician for therapy review.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 19: MDR Pathogen Exposure Alert",
+      details: {
+        "Objective": "Alert for exposure to MDR pathogens from roommates.",
+        "Patient ID": "P10111",
+        "Room": "217",
+        "Neighbor with MDR": "Enterococcus faecium",
+      },
+      calculation: {
+        "Process": "A rule triggers if a patient shares a room with an MDR-positive patient.",
+        "Formula": "Exposure risk = 1 if sharing room with MDR patient",
+        "Resulting Calculation": "Risk = 1",
+      },
+      outputs: {
+        "Expected Output": "Proactive rectal swab ordered and contact precautions applied.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 20: Airborne Pathogen Outbreak",
+      details: {
+        "Objective": "Detect airborne pathogen outbreaks via air sampling.",
+        "Location": "Pediatric ward",
+        "Air sampling": "1400 CFU/m³ (standard < 1000)",
+      },
+      calculation: {
+        "Process": "Triggers an alert if air sampling exceeds the standard threshold.",
+        "Formula": "Over-threshold = Measured – Standard",
+        "Resulting Calculation": "1400 - 1000 = 400 CFU/m³",
+      },
+      outputs: {
+        "Expected Output": "Alert sent; air filtration enhanced.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 21: Incomplete Device Removal",
+      details: {
+        "Objective": "Flag delays in medical device removal.",
+        "Patient ID": "P10113",
+        "Action": "Central line planned removal on Day 3, but still in on Day 7",
+      },
+      calculation: {
+        "Process": "Calculate the delay between planned and actual device removal.",
+        "Formula": "Delay = Actual – Planned",
+        "Resulting Calculation": "7 - 3 = 4 days",
+      },
+      outputs: {
+        "Expected Output": "System alerts physician for immediate action.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 22: Loss to Follow-Up",
+      details: {
+        "Objective": "Track compliance with scheduled follow-up tests.",
+        "Patient ID": "P10114",
+        "Action": "Scheduled for MRSA swab, not completed",
+      },
+      calculation: {
+        "Process": "A rule checks if a scheduled test has been completed within a 72-hour window.",
+        "Formula": "Compliance = 0 if test not done in 72hr",
+        "Resulting Calculation": "Compliance = 0",
+      },
+      outputs: {
+        "Expected Output": "System reminder issued to nurse manager.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 23: Repeat Positive Blood Culture",
+      details: {
+        "Objective": "Detect persistent bacteremia through repeat positive cultures.",
+        "Patient ID": "P10115",
+        "Blood cultures": "Day 1 positive, Day 4 positive",
+        "Pathogen": "Klebsiella pneumoniae",
+      },
+      calculation: {
+        "Process": "Checks the time between two positive blood cultures for the same pathogen.",
+        "Formula": "Persistent bacteremia = Days between positives > 2",
+        "Resulting Calculation": "4 - 1 = 3 days (> 2)",
+      },
+      outputs: {
+        "Expected Output": "Escalation to infectious diseases team triggered.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 24: Emergency Surgical Cleaning Need",
+      details: {
+        "Objective": "Trigger emergency cleaning based on environmental samples.",
+        "Location": "OR floor sample",
+        "Pathogen": "P. aeruginosa CFU = 2200",
+        "Last cleaning": "2 days ago",
+      },
+      calculation: {
+        "Process": "An emergency alert is triggered if CFU count is very high shortly after a clean.",
+        "Formula": "Emergency if CFU > 2000 and < 3 days since clean",
+        "Resulting Calculation": "Condition met (2200 > 2000 and 2 < 3)",
+      },
+      outputs: {
+        "Expected Output": "Immediate deep clean scheduled.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 25: Empiric Therapy Failure",
+      details: {
+        "Objective": "Detect failure of empiric antibiotic therapy.",
+        "Antibiotic": "Ceftriaxone started empirically",
+        "Pathogen": "Resistant Acinetobacter identified",
+      },
+      calculation: {
+        "Process": "A rule checks if the identified pathogen is resistant to the empirically started antibiotic.",
+        "Formula": "Failure = 1 if pathogen is resistant to given therapy",
+        "Resulting Calculation": "Failure = 1",
+      },
+      outputs: {
+        "Expected Output": "Alert to change therapy to effective agent.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 26: Disinfection Agent Audit",
+      details: {
+        "Objective": "Audit disinfection agents for expiration.",
+        "Action": "Ward-2 using expired disinfectant",
+      },
+      calculation: {
+        "Process": "A compliance rule checks for product expiration during audits.",
+        "Formula": "Audit failure = 1 if product expired",
+        "Resulting Calculation": "Failure = 1",
+      },
+      outputs: {
+        "Expected Output": "Procurement notified; expired stock removed.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 27: Ambient Water Sampling",
+      details: {
+        "Objective": "Monitor water quality in critical areas.",
+        "Location": "ICU water sample",
+        "Result": "Coliforms detected",
+      },
+      calculation: {
+        "Process": "A simple rule alerts if any coliforms are detected in ICU water samples.",
+        "Formula": "Alert if coliforms present in ICU water",
+        "Resulting Calculation": "Condition met",
+      },
+      outputs: {
+        "Expected Output": "Maintenance notified; water system flushed.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 28: Patient Isolation Breach",
+      details: {
+        "Objective": "Log breaches in patient isolation protocols.",
+        "Action": "MDRO isolation flagged for Patient P10120; Visitor logged in unprotected",
+      },
+      calculation: {
+        "Process": "A rule checks if visitors for isolated patients are logged with correct PPE status.",
+        "Formula": "Breach = 1 if visitor not logged with PPE",
+        "Resulting Calculation": "Breach = 1",
+      },
+      outputs: {
+        "Expected Output": "Incident review initiated.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 29: Missed Pharmacy Inventory",
+      details: {
+        "Objective": "Monitor pharmacy inventory for critical drug stockouts.",
+        "Action": "Pharmacy report: Colistin stock out",
+      },
+      calculation: {
+        "Process": "The system monitors inventory levels for critical antimicrobials.",
+        "Formula": "Stock out = 1 if inventory is zero",
+        "Resulting Calculation": "Stock out = 1",
+      },
+      outputs: {
+        "Expected Output": "Emergency order to suppliers placed.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 30: Unplanned ICU Transfer",
+      details: {
+        "Objective": "Manage and escalate unplanned ICU bed requests.",
+        "Patient ID": "P10122",
+        "Action": "Diagnosed VAP, requires ICU transfer; Bed not available",
+      },
+      calculation: {
+        "Process": "A rule checks for bed availability for urgent ICU transfers.",
+        "Formula": "Alert = 1 if required bed unavailable",
+        "Resulting Calculation": "Alert = 1",
+      },
+      outputs: {
+        "Expected Output": "Escalation for bed management priority.",
+        "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
+      },
+    },
+    {
+      case: "Test Case 31: Environmental Surface Retest",
+      details: {
+        "Objective": "Verify cleaning efficacy with re-testing.",
+        "Location": "Ward-7 desk surface",
+        "Action": "Failed cleaning efficacy; Repeat test after cleaning: Passed",
+      },
+      calculation: {
+        "Process": "The system tracks re-test results after a failed cleaning audit.",
+        "Formula": "Cleaning successful = Pass on repeat",
+        "Resulting Calculation": "Condition met",
+      },
+      outputs: {
+        "Expected Output": "Confirmation sent to quality control.",
         "Actual Result": <Badge className="bg-green-100 text-green-800">Passed</Badge>,
       },
     },
@@ -559,8 +968,8 @@ function TestCaseContent() {
 
   return (
       <Tabs defaultValue="case-0" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 md:grid-cols-8">
-            {testCases.map((tc, index) => (
+        <TabsList className="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-11">
+            {testCases.map((_, index) => (
                 <TabsTrigger key={`trigger-${index}`} value={`case-${index}`}>Case {index + 1}</TabsTrigger>
             ))}
         </TabsList>
@@ -583,7 +992,7 @@ function TestCaseContent() {
                                 </TableRow>
                                 <TableRow>
                                     <TableHead className="w-1/4 font-semibold">Outputs & Results</TableHead>
-                                    <TableCell className="text-xs">{renderContent(tc.outputs)}</TableCell>
+                                    <TableCell className="text-s">{renderContent(tc.outputs)}</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
@@ -757,3 +1166,5 @@ function MetricsJustificationContent() {
     </div>
   )
 }
+
+    
