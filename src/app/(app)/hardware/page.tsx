@@ -58,6 +58,18 @@ const trackedPersonnel = [
     { id: "P10115", location: "Ward Z (TC23)" },
     { id: "P10120", location: "Isolation (TC28)" },
     { id: "P10122", location: "ER (TC30)" },
+    { id: "P519", location: "Surgical (Dashboard)"},
+    { id: "P312", location: "Ward A (Dashboard)"},
+    { id: "P00123", location: "Ward C (Dashboard)"},
+    { id: "P604", location: "Ward C (Dashboard)"},
+    { id: "ICU-3", location: "ICU (TC12)"},
+    { id: "Ward-5", location: "Ward (TC17)"},
+    { id: "Pediatric-Ward", location: "Pediatrics (TC20)"},
+    { id: "OR-Floor", location: "Operating Room (TC24)"},
+    { id: "Ward-2", location: "Ward (TC26)"},
+    { id: "ICU-Water", location: "ICU (TC27)"},
+    { id: "Pharmacy-Colistin", location: "Pharmacy (TC29)"},
+    { id: "Ward-7", location: "Ward (TC31)"},
 ];
 
 
