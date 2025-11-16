@@ -39,6 +39,9 @@ const mockStatuses: WristbandStatus[] = [
 ];
 
 const trackedPersonnel = [
+  { id: "P12345", location: "ICU (TC1)" },
+  { id: "P12365", location: "Ward D (TC5)" },
+  { id: "P12438", location: "ICU (TC6)" },
   { id: "P789", location: "ICU" },
   { id: "P482", location: "Ward B" },
   { id: "S102", location: "ICU (Staff)"},
@@ -96,7 +99,7 @@ const LiveFeedCard = ({ personnelId, location, initialIndex }: { personnelId: st
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % mockStatuses.length);
-    }, 3000 + Math.random() * 1000); // Stagger updates
+    }, 3000 + Math.random() * 2000); // Stagger updates
 
     return () => clearInterval(interval);
   }, []);
