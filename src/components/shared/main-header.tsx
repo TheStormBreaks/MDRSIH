@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Hospital, LayoutDashboard, FilePlus, Bell, Database, Footprints } from "lucide-react";
+import { Hospital, LayoutDashboard, FilePlus, Bell, Database, Footprints, HardDrive } from "lucide-react";
 import { UserNav } from "./user-nav";
 import { Button } from "../ui/button";
 
@@ -35,6 +35,13 @@ export function MainHeader() {
               Tracking
             </Link>
              <Link
+              href="/hardware"
+              className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              <HardDrive className="mr-2 h-4 w-4" />
+              Hardware
+            </Link>
+             <Link
               href="/data-entry/logs"
               className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
             >
@@ -62,6 +69,12 @@ export function MainHeader() {
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
             >
               <Footprints className="h-5 w-5" />
+            </Link>
+            <Link
+              href="/hardware"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              <HardDrive className="h-5 w-5" />
             </Link>
              <Link
               href="/data-entry/logs"
