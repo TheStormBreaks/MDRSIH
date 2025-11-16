@@ -54,41 +54,40 @@ const StatusDisplay = ({ status }: { status: WristbandStatus }) => {
   const getStatusColor = (s: 'NORMAL' | 'HIGH RISK' | 'ALERT' | 'ELEVATED') => {
     switch (s) {
       case 'NORMAL':
-        return 'text-green-500';
+        return 'text-green-400';
       case 'HIGH RISK':
       case 'ALERT':
       case 'ELEVATED':
-        return 'text-red-500';
+        return 'text-red-400';
       default:
-        return 'text-foreground';
+        return 'text-white';
     }
   };
 
   return (
-    <pre className="font-mono text-sm leading-loose p-6 bg-slate-900 text-white rounded-lg border border-slate-700">
-      {'==============================================================\n'}
-      {'                    BIOSAFETY WRISTBAND STATUS                    \n\n'}
-      {'[ IR PROXIMITY ]     '}
+    <pre className="font-mono text-[10px] md:text-xs leading-relaxed p-3 bg-slate-900 text-white rounded-lg border border-slate-700 overflow-x-auto">
+      {'== BIOSAFETY WRISTBAND STATUS ==\n'}
+      {'[PROXIMITY] '}
       <span className={getStatusColor(status.proximity.status)}>
-        {'<< '}{status.proximity.status.padEnd(9, ' ')}{' >>'}
+        {'<<'} {status.proximity.status.padEnd(9)} {'>>'}
       </span>
-      {` (${status.proximity.level})\n\n`}
-      {'[ TEMP / HUMIDITY ]  '}
+      {` (${status.proximity.level})\n`}
+      {'[ENV]       '}
       <span className={getStatusColor(status.tempHumidity.status)}>
-        {'<< '}{status.tempHumidity.status.padEnd(9, ' ')}{' >>'}
+        {'<<'} {status.tempHumidity.status.padEnd(9)} {'>>'}
       </span>
-      {`\n   Temp: ${status.tempHumidity.temp}\n   Humidity: ${status.tempHumidity.humidity}\n\n`}
-      {'[ SWEAT / TOUCH ]    '}
+      {` T:${status.tempHumidity.temp}, H:${status.tempHumidity.humidity}\n`}
+      {'[CONTACT]   '}
       <span className={getStatusColor(status.sweatTouch.status)}>
-        {'<< '}{status.sweatTouch.status.padEnd(9, ' ')}{' >>'}
+        {'<<'} {status.sweatTouch.status.padEnd(9)} {'>>'}
       </span>
-      {`\n   Contact: ${status.sweatTouch.contact}\n   Capacitance: ${status.sweatTouch.capacitance}\n\n`}
-      {'[ MDR VIRUS RISK ]   '}
+      {` C:${status.sweatTouch.capacitance}\n`}
+      {'[MDR RISK]  '}
       <span className={getStatusColor(status.mdrRisk.status)}>
-        {'<< '}{status.mdrRisk.status.padEnd(9, ' ')}{' >>'}
+        {'<<'} {status.mdrRisk.status.padEnd(9)} {'>>'}
       </span>
-      {`\n   MDR Score: ${status.mdrRisk.score.toFixed(2)}\n`}
-      {'=============================================================='}
+      {` Score:${status.mdrRisk.score.toFixed(2)}\n`}
+      {'==============================='}
     </pre>
   );
 };
@@ -106,11 +105,11 @@ const LiveFeedCard = ({ personnelId, location, initialIndex }: { personnelId: st
 
   return (
      <Card>
-        <CardHeader>
-          <CardTitle>Live Wristband Feed ({personnelId} - {location})</CardTitle>
-          <CardDescription>Displaying real-time sensor data from a monitored individual's biosafety wristband.</CardDescription>
+        <CardHeader className="p-4">
+          <CardTitle className="text-base">Feed: {personnelId}</CardTitle>
+          <CardDescription className="text-xs">{location}</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-4 pt-0">
           <StatusDisplay status={mockStatuses[currentIndex]} />
         </CardContent>
       </Card>
@@ -129,7 +128,7 @@ export default function HardwarePage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {trackedPersonnel.map((person, index) => (
           <LiveFeedCard 
             key={person.id}
