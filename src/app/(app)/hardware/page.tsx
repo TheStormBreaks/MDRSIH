@@ -39,6 +39,9 @@ const mockStatuses: WristbandStatus[] = [
 ];
 
 const trackedPersonnel = [
+  { id: "P789", location: "ICU (Dashboard)" },
+  { id: "P482", location: "Ward B (Dashboard)" },
+  { id: "S102", location: "ICU Staff (Dashboard)" },
   { id: "P12345", location: "ICU (TC1)" },
   { id: "P12365", location: "Ward D (TC5)" },
   { id: "P12438", location: "ICU (TC6)" },
