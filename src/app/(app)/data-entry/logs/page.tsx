@@ -24,8 +24,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Stethoscope, Pill, Microscope, Check, X, AlertTriangle, Cpu, TestTube2, Database, BarChart } from "lucide-react";
 import React from 'react';
-import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
 
 
 const doctorLogs = [
@@ -221,7 +221,7 @@ export default function DataEntryLogsPage() {
                       <TableCell><Badge variant={log.type === 'Prescription' ? 'default' : 'secondary'}>{log.type}</Badge></TableCell>
                       <TableCell>{log.prescribed}</TableCell>
                       <TableCell>{log.sold}</TableCell>
-                      <TableCell className={cn(discrepancy > 0 && 'font-bold text-destructive')}>{discrepancy > 0 ? `+${discrepancy}` : discrepancy}</TableCell>
+                      <TableCell className={cn(discrepancy > 0, 'font-bold text-destructive')}>{discrepancy > 0 ? `+${discrepancy}` : discrepancy}</TableCell>
                       <TableCell>
                         {alert ? <Badge variant="destructive" className="flex items-center gap-1.5"><AlertTriangle className="h-3 w-3"/> Alert</Badge> : <Badge variant="outline" className="text-green-600 border-green-600">OK</Badge>}
                       </TableCell>
